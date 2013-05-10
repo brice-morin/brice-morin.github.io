@@ -2,7 +2,7 @@
   {% for post in site.categories.journal %}
       <h3 class="journal">
       [{{ forloop.rindex }}] {{ post.title }}</h3>
-      <div class="post">
+      <div class="compactPost">
         {{ post.content }}
       </div>
   {% endfor %}
@@ -11,7 +11,7 @@
   {% for post in site.categories.conference %}
       <h3 class="conference">
       [{{ forloop.rindex }}] {{ post.title }}</h3>
-      <div class="post">
+      <div class="compactPost">
         {{ post.content }}
       </div>
   {% endfor %}
@@ -20,7 +20,7 @@
   {% for post in site.categories.workshop %}
       <h3 class="workshop">
       [{{ forloop.rindex }}] {{ post.title }}</h3>
-      <div class="post">
+      <div class="compactPost">
         {{ post.content }}
       </div>
   {% endfor %}
@@ -33,7 +33,7 @@
         {% assign invitedTalk=invitedTalk | plus:1 %} 
       <h3 class="invitedTalk">
       [{{ invitedTalk }}] {{ post.title }}</h3>
-      <div class="post">
+      <div class="compactPost">
         {{ post.content }}
       </div>
       {% endif %}

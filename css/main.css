@@ -3,6 +3,12 @@ p {
 }
 
 .post {
+  font-size: 80%;
+  line-height: 50%;
+  margin: 0em;
+}
+
+.compactPost {
   font-size: 65%;
   line-height: 50%;
   margin: 0em;
