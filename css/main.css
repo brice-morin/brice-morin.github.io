@@ -1,5 +1,29 @@
-div.post {
+.post {
   font-size: smaller;
   text-indent: 25px;
   line-height: 50%;
+}
+
+.conference {
+  color: #99CCCC;
+}
+
+.journal {
+  color: #6699FF;
+}
+
+.workshop {
+  color: #99FF99;
+}
+
+.project {
+  color: #6699FF;
+}
+
+.prototype {
+  color: #6699FF;
+}
+
+.error {
+  color: #FF6600;
 }

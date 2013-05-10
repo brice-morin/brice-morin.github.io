@@ -7,6 +7,9 @@ title: Brice Morin's publications
   <div class="grid">
     <div class="unit whole center-on-mobiles">
 
+This page presents the list of my publications (journals, conferences, workshops) by year. All the papers are in English and have been peer-reviewed. See also <a href="http://www.informatik.uni-trier.de/~ley/pers/hd/m/Morin:Brice.html">DBLP</a> and <a href="http://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489&query=%28Author:81384605489%29%20&srt=CitedCount&role=Author&perpage=10&termshow=matchboolean">ACM Digital Library</a>, or <a href="http://www.researchgate.net/profile/Brice_Morin/">Research Gate</a>.
+<br/>
+
   {% assign currentYear = "0" %}
   {% for post in site.posts %}
     {% if post.categories contains 'paper' %}
@@ -14,11 +17,21 @@ title: Brice Morin's publications
       {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
       {% if currentYear !=  year %}
         {% assign currentYear = year %}
+	<br/>
     <h2>{{currentYear}}</h2>
+	<br/>
       {% endif %}
 
-
-      <span>[{{ forloop.rindex }}]</span> <a href="{{ post.url }}">{{ post.title }}</a>
+      {% if post.categories contains 'conference' %}
+      <h3 class="conference">
+      {% elsif post.categories contains 'workshop' %}
+      <h3 class="workshop">
+      {% elsif post.categories contains 'journal' %}
+      <h3 class="journal">
+      {% else %}
+      <h3>
+      {% endif%}
+      [{{ forloop.rindex }}] {{ post.title }}</h3>
       <div class="post">
         {{ post.content }}
       </div>

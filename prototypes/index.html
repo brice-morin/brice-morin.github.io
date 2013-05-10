@@ -1,19 +1,17 @@
 ---
 layout: default
-title: Brice Morin's projects
+title: Brice Morin's prototypes
 ---
 
 <section>
   <div class="grid">
     <div class="unit whole center-on-mobiles">
-
-  {% for post in site.categories.project %}
-    <h2 class="project">{{ post.title }} until {{post.date | date: "%d %b %Y"}}</h2>
+  {% for post in site.categories.prototype %}
+    <h2 class="prototype">{{ post.title }}</h2>
     <div class="post">
       {{ post.content }}
     </div>
   {% endfor %}
-
 </div>
 </div>
 </section>
