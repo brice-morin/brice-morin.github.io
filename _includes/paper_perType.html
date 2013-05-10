@@ -1,0 +1,40 @@
+  <h2>Journal articles</h2>
+  {% for post in site.categories.journal %}
+      <h3 class="journal">
+      [{{ forloop.rindex }}] {{ post.title }}</h3>
+      <div class="post">
+        {{ post.content }}
+      </div>
+  {% endfor %}
+
+  <h2>Conference papers</h2>
+  {% for post in site.categories.conference %}
+      <h3 class="conference">
+      [{{ forloop.rindex }}] {{ post.title }}</h3>
+      <div class="post">
+        {{ post.content }}
+      </div>
+  {% endfor %}
+
+  <h2>Workshop papers</h2>
+  {% for post in site.categories.workshop %}
+      <h3 class="workshop">
+      [{{ forloop.rindex }}] {{ post.title }}</h3>
+      <div class="post">
+        {{ post.content }}
+      </div>
+  {% endfor %}
+
+  <h2>Invited Talks</h2>
+      {% comment %} I could not find a way to iterate on site.categories.invited talk (not quite sure how to escape the space...) {% endcomment %}
+  {% assign invitedTalk = "0" %}
+  {% for post in site.categories.paper %}
+      {% if post.categories contains 'invited talk' %}
+        {% assign invitedTalk=invitedTalk | plus:1 %} 
+      <h3 class="invitedTalk">
+      [{{ invitedTalk }}] {{ post.title }}</h3>
+      <div class="post">
+        {{ post.content }}
+      </div>
+      {% endif %}
+  {% endfor %}

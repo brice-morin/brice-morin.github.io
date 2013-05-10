@@ -1,0 +1,25 @@
+{% assign workshop = "0" %}
+{% assign conference = "0" %}
+{% assign journal = "0" %}
+{% assign invitedTalk = "0" %}
+{% for post in site.categories.paper %}
+  {% if post.categories contains 'conference' %}
+    {% assign conference=conference | plus:1 %} 
+  {% elsif post.categories contains 'workshop' %}
+    {% assign workshop=workshop | plus:1 %}   
+  {% elsif post.categories contains 'journal' %}
+    {% assign journal=journal | plus:1 %}   
+  {% elsif post.categories contains 'invited talk' %}
+    {% assign invitedTalk=invitedTalk | plus:1 %}   
+  {% endif%}
+{% endfor %}
+
+<section>
+  <div class="grid">
+    <div class="unit whole center-on-mobiles">
+
+This page presents the list of my publications (<b class="journal">journals ({{ journal }})</b>, <b class="conference">conferences ({{ conference }})</b>, <b class="workshop">workshops ({{ workshop }})</b> or <b class="invitedTalk">invited talks ({{ invitedTalk }})</b>) by year. All the papers are in English and have been peer-reviewed. See also <a href="http://www.informatik.uni-trier.de/~ley/pers/hd/m/Morin:Brice.html">DBLP</a> and <a href="http://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489&query=%28Author:81384605489%29%20&srt=CitedCount&role=Author&perpage=10&termshow=matchboolean">ACM Digital Library</a>, or <a href="http://www.researchgate.net/profile/Brice_Morin/">Research Gate</a>.
+<br/>
+</div>
+</div>
+</section>
