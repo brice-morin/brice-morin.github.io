@@ -2,10 +2,10 @@
   <aside>
     <h4>Papers</h4>
     <ul>
-      <li class="{% if page.title == "Per year" %}current{% endif %}">
+      <li class="{% if page.title contains "per Year" %}current{% endif %}">
         <a href="{{ site.url }}/papers/">Per year</a>
       </li>
-      <li class="{% if page.title == "Per Type" %}current{% endif %}">
+      <li class="{% if page.title contains "per Type" %}current{% endif %}">
         <a href="{{ site.url }}/papers/indexPerType.html">Per type</a>
       </li>
     </ul>
