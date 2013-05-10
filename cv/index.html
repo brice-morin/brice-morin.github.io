@@ -1,0 +1,27 @@
+---
+layout: default
+title: Brice Morin's CV
+---
+
+<section>
+  <div class="grid">
+    <div class="unit whole center-on-mobiles">
+
+  {% for post in site.categories.cv %}
+
+      {% if post.categories contains 'diploma' %}
+      <h3 class="diploma">
+      {% elsif post.categories contains 'work' %}
+      <h3 class="work">
+      {% else %}
+      <h3>
+      {% endif%}
+      {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
+    <div class="post">
+      {{ post.content }}
+    </div>
+  {% endfor %}
+
+</div>
+</div>
+</section>

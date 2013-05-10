@@ -35,3 +35,13 @@ p {
 .error {
   color: #FF6600;
 }
+
+.diploma {
+  font-size: smaller;
+  color: #99FF99;
+}
+
+.work {
+  font-size: smaller;
+  color: #6699FF;
+}
