@@ -24,6 +24,11 @@ p {
   color: #99FF99;
 }
 
+.invitedTalk {
+  font-size: smaller;
+  color: #FFFF66;
+}
+
 .project {
   color: #6699FF;
 }

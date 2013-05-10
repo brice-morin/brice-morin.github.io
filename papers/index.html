@@ -7,13 +7,11 @@ title: Brice Morin's publications
   <div class="grid">
     <div class="unit whole center-on-mobiles">
 
-This page presents the list of my publications (<b class="journal">journals</b>, <b class="conference">conferences</b>, <b class="workshop">workshops</b>) by year. All the papers are in English and have been peer-reviewed. See also <a href="http://www.informatik.uni-trier.de/~ley/pers/hd/m/Morin:Brice.html">DBLP</a> and <a href="http://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489&query=%28Author:81384605489%29%20&srt=CitedCount&role=Author&perpage=10&termshow=matchboolean">ACM Digital Library</a>, or <a href="http://www.researchgate.net/profile/Brice_Morin/">Research Gate</a>.
+This page presents the list of my publications (<b class="journal">journals</b>, <b class="conference">conferences</b>, <b class="workshop">workshops</b> or <b class="invitedTalk">invited talks</b>) by year. All the papers are in English and have been peer-reviewed. See also <a href="http://www.informatik.uni-trier.de/~ley/pers/hd/m/Morin:Brice.html">DBLP</a> and <a href="http://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489&query=%28Author:81384605489%29%20&srt=CitedCount&role=Author&perpage=10&termshow=matchboolean">ACM Digital Library</a>, or <a href="http://www.researchgate.net/profile/Brice_Morin/">Research Gate</a>.
 <br/>
 
   {% assign currentYear = "0" %}
-  {% for post in site.posts %}
-    {% if post.categories contains 'paper' %}
-
+  {% for post in site.categories.paper %}
       {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
       {% if currentYear !=  year %}
         {% assign currentYear = year %}
@@ -28,6 +26,8 @@ This page presents the list of my publications (<b class="journal">journals</b>,
       <h3 class="workshop">
       {% elsif post.categories contains 'journal' %}
       <h3 class="journal">
+      {% elsif post.categories contains 'invited talk' %}
+      <h3 class="invitedTalk">
       {% else %}
       <h3>
       {% endif%}
@@ -35,7 +35,6 @@ This page presents the list of my publications (<b class="journal">journals</b>,
       <div class="post">
         {{ post.content }}
       </div>
-    {% endif %}
   {% endfor %}
 
 </div>
