@@ -1,0 +1,31 @@
+---
+layout: default
+title: Brice Morin's publications
+---
+
+<section>
+  <div class="grid">
+    <div class="unit whole center-on-mobiles">
+
+  <h1>Papers</h1>
+  {% assign currentYear = "0" %}
+  {% for post in site.posts %}
+    {% if post.categories contains 'paper' %}
+
+      {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
+      {% if currentYear !=  year %}
+        {% assign currentYear = year %}
+    <h2>{{currentYear}}</h2>
+      {% endif %}
+
+
+      <span>[{{ forloop.rindex }}]</span> <a href="{{ post.url }}">{{ post.title }}</a>
+      <div class="post">
+        {{ post.content }}
+      </div>
+    {% endif %}
+  {% endfor %}
+
+</div>
+</div>
+</section>

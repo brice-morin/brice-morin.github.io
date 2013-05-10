@@ -1,7 +1,6 @@
 safe: true
 lsi: false
 pygments: true
-permalink: pretty
+permalink: /:categories/:year/:title/
 google_analytics_id: a40793073w70088331p72238646
-url : http://brice-morin.github.io
 
