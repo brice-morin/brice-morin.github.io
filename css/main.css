@@ -1,18 +1,26 @@
+p {
+  margin: 0em;
+}
+
 .post {
   font-size: smaller;
   text-indent: 25px;
   line-height: 50%;
+  margin: 0em;
 }
 
 .conference {
+  font-size: smaller;
   color: #99CCCC;
 }
 
 .journal {
+  font-size: smaller;
   color: #6699FF;
 }
 
 .workshop {
+  font-size: smaller;
   color: #99FF99;
 }
 
