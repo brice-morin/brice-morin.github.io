@@ -1,0 +1,20 @@
+---
+layout: default
+title: Brice Morin's projects
+---
+
+<section>
+  <div class="grid">
+    <div class="unit whole center-on-mobiles">
+
+  <h1>Projects</h1>
+  {% for post in site.categories.project %}
+    <a href="{{ post.url }}">{{ post.title }}</a> until {{post.date | date: "%d %b %Y"}}
+    <div class="post">
+      {{ post.content }}
+    </div>
+  {% endfor %}
+
+</div>
+</div>
+</section>
