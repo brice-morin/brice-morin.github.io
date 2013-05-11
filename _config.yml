@@ -2,5 +2,5 @@ safe: true
 lsi: false
 pygments: true
 permalink: /:categories/:year/:title/
+url: http://brice-morin.info
 google_analytics_id: a40793073w70088331p72238646
-
