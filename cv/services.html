@@ -13,7 +13,7 @@ title: Brice Morin's Services
 	<h2>Services</h2>
 	  {% for post in site.categories.cv %}
             {% if post.categories contains 'service' %}
-            <h3 class="service"> {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
+            <h3 class="service"> {{post.date | date: "%Y"}}: {{ post.title }} </h3>
               <div class="post">
                 {{ post.content }}
              </div>
