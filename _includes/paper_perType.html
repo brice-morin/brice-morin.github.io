@@ -7,6 +7,15 @@
       </div>
   {% endfor %}
 
+  <h2>Book Chapter</h2>
+  {% for post in site.categories.chapter %}
+      <h3 class="chapter">
+      [{{ forloop.rindex }}] {{ post.title }}</h3>
+      <div class="compactPost">
+        {{ post.content }}
+      </div>
+  {% endfor %}
+
   <h2>Conference papers</h2>
   {% for post in site.categories.conference %}
       <h3 class="conference">
@@ -40,10 +49,12 @@
   {% endfor %}
 
   <h2>Other papers</h2>
+  {% assign other = "0" %}
   {% for post in site.categories.paper %}
-      {% unless (post.categories contains 'journal') or (post.categories contains 'conference') or (post.categories contains 'workshop') or (post.categories contains 'invited talk') %}
+      {% unless (post.categories contains 'journal') or (post.categories contains 'conference') or (post.categories contains 'workshop') or (post.categories contains 'invited talk') or (post.categories contains 'chapter') %}
+        {% assign other=other | plus:1 %}
       <h3 class="paper">
-      [{{ forloop.rindex }}] {{ post.title }}</h3>
+      [{{ other }}] {{ post.title }}</h3>
       <div class="compactPost">
         {{ post.content }}
       </div>

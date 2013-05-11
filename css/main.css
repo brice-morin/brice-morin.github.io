@@ -28,6 +28,11 @@ p {
   color: #6699FF;
 }
 
+.chapter {
+  font-size: smaller;
+  color: #CC3333;
+}
+
 .workshop {
   font-size: smaller;
   color: #99FF99;
