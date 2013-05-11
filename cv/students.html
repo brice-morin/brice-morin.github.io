@@ -1,0 +1,30 @@
+---
+layout: default
+title: Brice Morin's Students
+---
+
+<section>
+    <div class="grid">
+
+      {% include cv_contents_mobile.html %}
+
+      <div class="unit four-fifths">
+        <article>
+	<h2>Students</h2>
+	  {% for post in site.categories.cv %}
+            {% if post.categories contains 'student' %}
+            <h3 class="student"> {{ post.title }} </h3>
+              <div class="post">
+                {{ post.content }}
+             </div>
+            {% endif %}
+          {% endfor %}
+        </article>
+      </div>
+
+      {% include cv_contents.html %}
+
+      <div class="clear"></div>
+
+    </div>
+  </section>

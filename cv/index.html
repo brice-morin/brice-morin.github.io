@@ -1,33 +1,36 @@
 ---
 layout: default
-title: Brice Morin's CV
+title: Brice Morin's Positions and Education
 ---
 
 <section>
-  <div class="grid">
-    <div class="unit whole center-on-mobiles">
+    <div class="grid">
 
-  <h2>Positions and Education</h2>
-  {% for post in site.categories.cv %}
+      {% include cv_contents_mobile.html %}
+
+      <div class="unit four-fifths">
+        <article>
+	<h2>Positions and Education</h2>
+	  {% for post in site.categories.cv %}
       {% if post.categories contains 'diploma' %}
       <h3 class="diploma">
       {% elsif post.categories contains 'work' %} 
       <h3 class="work"> Since 
-      {% else %}
-      <h3>
       {% endif%}
+
+      {% if post.categories contains 'diploma' or post.categories contains 'work' %}
       {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
     <div class="post">
       {{ post.content }}
     </div>
+      {% endif %}
   {% endfor %}
+        </article>
+      </div>
 
-  <h2>Supervision (Master and PhD Students)</h2>
+      {% include cv_contents.html %}
 
-  <h2>Organization</h2>
+      <div class="clear"></div>
 
-  <h2>Peer reviewing</h2>
-
-</div>
-</div>
-</section>
+    </div>
+  </section>
