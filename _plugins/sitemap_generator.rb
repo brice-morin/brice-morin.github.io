@@ -50,7 +50,8 @@ module Jekyll
 
   # Any files that include posts, so that when a new post is added, the last
   # modified date of these pages should take that into account
-  PAGES_INCLUDE_POSTS = ["index.html", "papers/index.html", "papers/perTYpe/index.html", "projects/index.html", "prototypes/index.html", "prototypes/contributor/index.html", "prototypes/other/index.html", "prototypes/past/index.html", "cv/index.html", "cv/services/index.html", "cv/students/index.html"]
+  #PAGES_INCLUDE_POSTS = ["index.html", "papers/index.html", "papers/perTYpe/index.html", "projects/index.html", "prototypes/index.html", "prototypes/contributor/index.html", "prototypes/other/index.html", "prototypes/past/index.html", "cv/index.html", "cv/services/index.html", "cv/students/index.html"]
+PAGES_INCLUDE_POSTS = ["index.html"]
 
   # Custom variable names for changefreq and priority elements
   # These names are used within the YAML Front Matter of pages or posts
