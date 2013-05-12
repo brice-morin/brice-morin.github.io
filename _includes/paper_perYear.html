@@ -1,9 +1,16 @@
-  {% assign currentYear = "0" %}
+  {% assign currentYear = 0 %}
+  {% assign counter = 0 %}
   {% for post in site.categories.paper %}
       {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
       {% if currentYear !=  year %}
+        {% assign counter=counter | plus:1 %}
+        {% unless counter == 1 %}
+          </div>
+        {% endunless %}
         {% assign currentYear = year %}
-    <h2>{{currentYear}}</h2>
+    <h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} Click to see papers{% endif %}</h2>
+    <div id="publications{{ currentYear }}">
+ 	{% assign closeDiv = true %}
       {% endif %}
 
       {% if post.categories contains 'conference' %}
@@ -23,4 +30,24 @@
       <div class="compactPost">
         {{ post.content }}
       </div>
+  {% endfor %}
+
+  {% assign currentYear = 0 %}
+  {% assign counter = 0 %}
+  {% for post in site.categories.paper %}
+      {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
+      {% if currentYear !=  year %}
+          {% assign currentYear = year %}
+	  {% assign counter=counter | plus:1 %}
+          {% if counter > 4%}
+            <script>
+              $('#{{ currentYear }}').click(function() {
+              $('#publications{{ currentYear }}').toggle('slow', function() {
+              // Animation complete.
+              });
+              });
+	      $('#publications{{ currentYear }}').hide();
+           </script>
+          {% endif %}
+      {% endif %}
   {% endfor %}
