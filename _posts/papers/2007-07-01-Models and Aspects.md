@@ -10,4 +10,4 @@ In _Models and Aspects workshop, at ECOOP 2007_
 
 July 2007.
 
-[PDF](https://drive.google.com/#folders/0B8COpPaPIDHYcmxrQjAxTFM4ckE)
+[PDF](https://docs.google.com/file/d/0B8COpPaPIDHYVFIzLVA2QnpoSWM/edit?usp=sharing)
