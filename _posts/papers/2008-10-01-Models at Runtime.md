@@ -9,3 +9,5 @@ Franck Fleurey, Vegard Delhen, Nelly Bencomo, **Brice Morin**, and Jean-Marc Jé
 In _3rd International Workshop on Models@Runtime, at MoDELS'08_
 
 Toulouse, France, oct 2008.
+
+[PDF](https://docs.google.com/file/d/0B8COpPaPIDHYWlFKSzlYaUdqSzA/edit?usp=sharing)
