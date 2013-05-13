@@ -18,10 +18,16 @@ var chart;
 {% assign invitedTalk = 0 %}
 {% assign chapter = 0 %}
 {% assign other = 0 %}
+{% assign workshopTotal = 0 %}
+{% assign conferenceTotal = 0 %}
+{% assign journalTotal = 0 %}
+{% assign invitedTalkTotal = 0 %}
+{% assign chapterTotal = 0 %}
+{% assign otherTotal = 0 %}
 {% assign currentYear = 0 %}
 {% assign counter = 0 %}
 var chartData = [
-{% for post in site.categories.paper reversed%}
+{% for post in site.categories.paper%}
 
   {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
   {% if currentYear !=  year or forloop.last%}
@@ -55,6 +61,12 @@ var chartData = [
    chapter: {{chapter}},
    other: {{other}}
  }
+      {% assign workshopTotal=workshopTotal | plus:workshop%}
+      {% assign conferenceTotal=conferenceTotal | plus:conference%}
+      {% assign journalTotal=journalTotal | plus:journal%}
+      {% assign invitedTalkTotal=invitedTalkTotal | plus:invitedTalk%}
+      {% assign chapterTotal=chapterTotal | plus:chapter%}
+      {% assign otherTotal=otherTotal | plus:other%}
       {% assign workshop = 0 %}
       {% assign conference = 0 %}
       {% assign journal = 0 %}
@@ -89,7 +101,8 @@ AmCharts.ready(function() {
    chart.dataProvider = chartData;
    chart.categoryField = "year";
    chart.plotAreaBorderAlpha = 0.2;
-   chart.rotate = false;
+   chart.rotate = true;
+   chart.color = "#FFFFFF";
 
    // AXES
    // Category
@@ -115,6 +128,7 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#6699FF";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // second graph                              
@@ -126,6 +140,7 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#99CCCC";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // thirdt graph              
@@ -137,6 +152,7 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#99FF99";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // fourth graph
@@ -148,6 +164,7 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#FFFF66";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // fifth graph
@@ -159,6 +176,7 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#666699";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // sixth graph  
@@ -170,11 +188,12 @@ AmCharts.ready(function() {
    graph.lineAlpha = 0;
    graph.fillAlphas = 1;
    graph.lineColor = "#D8E0BD";
+   graph.color = "#000000";
    chart.addGraph(graph);
 
    // LEGEND
    var legend = new AmCharts.AmLegend();
-   legend.position = "right";
+   legend.position = "bottom";
    legend.borderAlpha = 0.3;
    legend.horizontalGap = 10;
    legend.switchType = "v";
@@ -183,9 +202,68 @@ AmCharts.ready(function() {
    // WRITE
    chart.write("chartdiv");
 });
+
+
+var chartDataTotal = [{
+    type: "Journals",
+    total: {{journalTotal}}},
+{
+    type: "Conferences",
+    total: {{conferenceTotal}}},
+{
+    type: "Workshops",
+    total: {{workshopTotal}}},
+{
+    type: "Book chapters",
+    total: {{chapterTotal}}},
+{
+    type: "Invited Talks",
+    total: {{invitedTalkTotal}}},
+{
+    type: "Other",
+    total: {{otherTotal}}}];
+
+AmCharts.ready(function() {
+    // RADAR CHART
+    chart = new AmCharts.AmRadarChart();
+    chart.dataProvider = chartDataTotal;
+    chart.categoryField = "type";
+    chart.startDuration = 2;
+    chart.color="#FFFFFF";
+
+    // VALUE AXIS
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.axisAlpha = 0.15;
+    valueAxis.minimum = 0;
+    valueAxis.dashLength = 3;
+    valueAxis.axisTitleOffset = 20;
+    valueAxis.gridCount = 5;
+    chart.addValueAxis(valueAxis);
+
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.valueField = "total";
+    graph.bullet = "round";
+    graph.balloonText = "[[value]] papers";
+    graph.color = "#FFFFFF";
+    chart.addGraph(graph);
+
+
+    // WRITE
+    chart.write("chartdivTotal");
+});
+
+
 </script>      
 
-<div id="chartdiv" style="width: 100%; height: 320px;"></div>
+
+
+<h2>Publications per type, per year</h2>
+{% assign counter=counter | times:50 %}  
+<div id="chartdiv" style="width: 100%; height: {{counter}}px;"></div>
+
+<!--<h2>Publications per type, accumulated</h2>
+<div id="chartdivTotal" style="width: 100%; height: 256px;"></div>-->
 
         </article>
       </div>
