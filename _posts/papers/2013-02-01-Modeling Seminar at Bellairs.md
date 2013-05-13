@@ -1,6 +1,6 @@
 ---
 layout: paper
-title: Modeling Seminar at Bellairs Institure (McGill University)
+title: Modeling Seminar at Bellairs Institute (McGill University)
 categories: [paper, invited talk]
 ---
 
