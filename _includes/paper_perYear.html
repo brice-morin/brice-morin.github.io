@@ -8,7 +8,7 @@
           </div>
         {% endunless %}
         {% assign currentYear = year %}
-    <h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} Click to see papers{% endif %}</h2>
+    <h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <i id="{{ currentYear }}_zoomIn" class="icon-zoom-in"></i><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out"></i>{% endif %}</h2>
     <div id="publications{{ currentYear }}">
  	{% assign closeDiv = true %}
       {% endif %}
@@ -41,12 +41,19 @@
 	  {% assign counter=counter | plus:1 %}
           {% if counter > 4%}
             <script>
-              $('#{{ currentYear }}').click(function() {
+			  $('#{{ currentYear }}_zoomIn').click(function() {
               $('#publications{{ currentYear }}').toggle('slow', function() {
-              // Animation complete.
+                $('#publications{{ currentYear }}_zoomIn').hide();
+				$('#publications{{ currentYear }}_zoomOut').show();
               });
               });
-	      $('#publications{{ currentYear }}').hide();
+			  $('#{{ currentYear }}_zoomOut').click(function() {
+              $('#publications{{ currentYear }}').toggle('slow', function() {
+                $('#publications{{ currentYear }}_zoomOut').hide();
+				$('#publications{{ currentYear }}_zoomIn').show();
+              });
+              });
+	      $('#publications{{ currentYear }}_zoomOut').hide();
            </script>
           {% endif %}
       {% endif %}
