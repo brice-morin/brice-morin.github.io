@@ -2,12 +2,18 @@
 layout: default
 title: Brice Morin's Positions and Education (CV)
 ---
-
+{% assign lastDate = 0 %}
+{% for post in site.categories.cv %}
+  {% if lastDate == 0 %}
+    {% if post.categories contains 'diploma' or post.categories contains 'work' %}
+      {% assign lastDate = forloop.index %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
 <section>
     <div class="grid">
 
       {% include cv_contents_mobile.html %}
-
       <div class="unit four-fifths">
         <article>
 	<h2>Positions and Education</h2>
@@ -15,7 +21,7 @@ title: Brice Morin's Positions and Education (CV)
       {% if post.categories contains 'diploma' %}
       <h3 class="diploma">
       {% elsif post.categories contains 'work' %} 
-      <h3 class="work"> Since 
+      <h3 class="work"> {% if forloop.index == lastDate %}Since{% endif %} 
       {% endif%}
 
       {% if post.categories contains 'diploma' or post.categories contains 'work' %}
