@@ -8,7 +8,7 @@
           </div>
         {% endunless %}
         {% assign currentYear = year %}
-    <h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <i id="{{ currentYear }}_zoomIn" class="icon-zoom-in"></i><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out"></i>{% endif %}</h2>
+    <div><h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <div id="{{ currentYear }}_zoomIn_div"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in"></i></div><div id="{{ currentYear }}_zoomOut_div"><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out"></i><div>{% endif %}</h2></div>
     <div id="publications{{ currentYear }}">
  	{% assign closeDiv = true %}
       {% endif %}
@@ -43,17 +43,18 @@
             <script>
 			  $('#{{ currentYear }}_zoomIn').click(function() {
               $('#publications{{ currentYear }}').toggle('slow', function() {
-                $('#publications{{ currentYear }}_zoomIn').hide();
-				$('#publications{{ currentYear }}_zoomOut').show();
+                $('#{{ currentYear }}_zoomIn_div').hide();
+				$('#{{ currentYear }}_zoomOut_div').show();
               });
               });
 			  $('#{{ currentYear }}_zoomOut').click(function() {
               $('#publications{{ currentYear }}').toggle('slow', function() {
-                $('#publications{{ currentYear }}_zoomOut').hide();
-				$('#publications{{ currentYear }}_zoomIn').show();
+                $('#{{ currentYear }}_zoomOut_div').hide();
+				$('#{{ currentYear }}_zoomIn_div').show();
               });
               });
-	      $('#publications{{ currentYear }}_zoomOut').hide();
+	      $('#publications{{ currentYear }}').hide();
+		  $('#{{ currentYear }}_zoomOut_div').hide();
            </script>
           {% endif %}
       {% endif %}
