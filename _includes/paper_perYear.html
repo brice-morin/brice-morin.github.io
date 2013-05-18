@@ -40,7 +40,7 @@
           {% assign currentYear = year %}
 	  {% assign counter=counter | plus:1 %}
           {% if counter > 4%}
-            <script>
+            <script async>
 			  $('#{{ currentYear }}_zoomIn').click(function() {
               $('#publications{{ currentYear }}').toggle('slow', function() {
                 $('#{{ currentYear }}_zoomIn_div').hide();
