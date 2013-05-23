@@ -33,29 +33,7 @@
 	  {% if counter >= 4 and forloop.last%}</div>{% endif %}
 	  {% assign counter=counter | plus:1 %}
   {% endfor %}
-  {% assign counter = 0 %}  
-  {% for post in site.categories.conference %}
-	  {% if counter == 10%}
-            <script async>
-			  $('#conference_zoomIn').click(function() {
-              $('#olderConference').toggle('slow', function() {
-                $('#conference_zoomIn_div').hide();
-				$('#conference_zoomOut_div').show();
-              });
-              });
-			  $('#conference_zoomOut').click(function() {
-              $('#olderConference').toggle('slow', function() {
-                $('#conference_zoomOut_div').hide();
-				$('#conference_zoomIn_div').show();
-              });
-              });
-	      $('#olderConference').hide();
-		  $('#conference_zoomOut_div').hide();
-           </script>	  
-	  {% endif %}
-	  {% assign counter=counter | plus:1 %}
-  {% endfor %}
-
+  
   
   {% assign counter = 0 %}  
   <h2>Workshop papers</h2>
@@ -96,4 +74,30 @@
         {{ post.content }}
       </div>
       {% endunless %}
+  {% endfor %}
+
+  
+  
+  
+  {% assign counter = 0 %}  
+  {% for post in site.categories.conference %}
+	  {% if counter == 10%}
+            <script>
+			  $('#conference_zoomIn').click(function() {
+              $('#olderConference').toggle('slow', function() {
+                $('#conference_zoomIn_div').hide();
+				$('#conference_zoomOut_div').show();
+              });
+              });
+			  $('#conference_zoomOut').click(function() {
+              $('#olderConference').toggle('slow', function() {
+                $('#conference_zoomOut_div').hide();
+				$('#conference_zoomIn_div').show();
+              });
+              });
+	      $('#olderConference').hide();
+		  $('#conference_zoomOut_div').hide();
+           </script>	  
+	  {% endif %}
+	  {% assign counter=counter | plus:1 %}
   {% endfor %}
