@@ -8,7 +8,7 @@
           </div>
         {% endunless %}
         {% assign currentYear = year %}
-    <div><h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <div id="{{ currentYear }}_zoomIn_div"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in"></i></div><div id="{{ currentYear }}_zoomOut_div"><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out"></i><div>{% endif %}</h2></div>
+    <div><h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <div id="{{ currentYear }}_zoomIn_div"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in">See {{ currentYear }} papers</i></div><div id="{{ currentYear }}_zoomOut_div"><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out">Hide {{ currentYear }} papers</i><div>{% endif %}</h2></div>
     <div id="publications{{ currentYear }}">
  	{% assign closeDiv = true %}
       {% endif %}
