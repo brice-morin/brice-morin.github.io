@@ -22,11 +22,13 @@
   
   {% assign counter = 0 %}  
   <h2>Conference papers</h2>
+  <div>
   {% for post in site.categories.conference %}
-	  {% if counter == 10%} <div>
+	  {% if counter == 10%} 
+	  </div>
+	  <div>
 		<div id="conference_zoomIn_div"><i id="conference_zoomIn" class="icon-zoom-in"></i></div>
 		<div id="conference_zoomOut_div"><i id="conference_zoomOut" class="icon-zoom-out"></i></div>
-	</div>
 	<div id="olderConference">
 	  {% endif %}
   
@@ -38,6 +40,7 @@
 	  {% if counter >= 4 and forloop.last%}</div>{% endif %}
 	  {% assign counter=counter | plus:1 %}
   {% endfor %}
+  </div>
   
   
   {% assign counter = 0 %}  
