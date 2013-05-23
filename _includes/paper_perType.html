@@ -1,3 +1,4 @@
+  {% assign counter = 0 %}  
   <h2>Journal articles</h2>
   {% for post in site.categories.journal %}
       <h3 class="journal">
@@ -7,6 +8,8 @@
       </div>
   {% endfor %}
 
+  
+  {% assign counter = 0 %}
   <h2>Book Chapter</h2>
   {% for post in site.categories.chapter %}
       <h3 class="chapter">
@@ -16,15 +19,45 @@
       </div>
   {% endfor %}
 
+  
+  {% assign counter = 0 %}  
   <h2>Conference papers</h2>
   {% for post in site.categories.conference %}
+	  {% if counter == 10%} <div id="conference_zoomIn_div"><i id="conference_zoomIn" class="icon-zoom-in"></i></div><div id="conference_zoomOut_div"><i id="conference_zoomOut" class="icon-zoom-out"></i><div><div id="olderConference">{% endif %}
+  
       <h3 class="conference">
       [{{ forloop.rindex }}] {{ post.title }}</h3>
       <div class="compactPost">
         {{ post.content }}
       </div>
+	  {% if counter >= 4 and forloop.last%}</div>{% endif %}
+	  {% assign counter=counter | plus:1 %}
+  {% endfor %}
+  {% assign counter = 0 %}  
+  {% for post in site.categories.conference %}
+	  {% if counter == 10%}
+            <script async>
+			  $('#conference_zoomIn').click(function() {
+              $('#olderConference').toggle('slow', function() {
+                $('#conference_zoomIn_div').hide();
+				$('#conference_zoomOut_div').show();
+              });
+              });
+			  $('#conference_zoomOut').click(function() {
+              $('#olderConference').toggle('slow', function() {
+                $('#conference_zoomOut_div').hide();
+				$('#conference_zoomIn_div').show();
+              });
+              });
+	      $('#olderConference').hide();
+		  $('#conference_zoomOut_div').hide();
+           </script>	  
+	  {% endif %}
+	  {% assign counter=counter | plus:1 %}
   {% endfor %}
 
+  
+  {% assign counter = 0 %}  
   <h2>Workshop papers</h2>
   {% for post in site.categories.workshop %}
       <h3 class="workshop">
@@ -34,6 +67,8 @@
       </div>
   {% endfor %}
 
+  
+  {% assign counter = 0 %}  
   <h2>Invited Talks</h2>
       {% comment %} I could not find a way to iterate on site.categories.invited talk (not quite sure how to escape the space...) {% endcomment %}
   {% assign invitedTalk = "0" %}
@@ -48,6 +83,8 @@
       {% endif %}
   {% endfor %}
 
+  
+  {% assign counter = 0 %}  
   <h2>Other papers</h2>
   {% assign other = "0" %}
   {% for post in site.categories.paper %}
