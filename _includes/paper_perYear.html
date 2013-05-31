@@ -8,9 +8,15 @@
           </div>
         {% endunless %}
         {% assign currentYear = year %}
-    <div><h2 id="{{ currentYear }}">{{currentYear}} {% if counter > 4%} <a id="{{ currentYear }}_a"><div id="{{ currentYear }}_zoomIn_div"><h4><a href="#{{ currentYear }}_a"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in">See {{ currentYear }} papers</i></a></h4></div><div id="{{ currentYear }}_zoomOut_div"><h4><a href="#{{ currentYear }}_a"><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out">Hide {{ currentYear }} papers</i></a></h4><div></a>{% endif %}</h2></div>
+    <div>
+	<h2 id="{{ currentYear }}">{{currentYear}}</h2>
+	{% if counter > 4%} 
+	<a id="{{ currentYear }}_a"><div id="{{ currentYear }}_zoomIn_div"><h4><a href="#{{ currentYear }}_a"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in">See {{ currentYear }} papers</i></a></h4></div>
+	<div id="{{ currentYear }}_zoomOut_div"><h4><a href="#{{ currentYear }}_a"><i id="{{ currentYear }}_zoomOut" class="icon-zoom-out">Hide {{ currentYear }} papers</i></a></h4></div>
+	</a>
+	{% endif %}
+	
     <div id="publications{{ currentYear }}">
- 	{% assign closeDiv = true %}
       {% endif %}
 
       {% if post.categories contains 'conference' %}
