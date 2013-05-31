@@ -27,9 +27,9 @@
 	  {% if counter == 10%} 
 	  </div>
 	  <div>
-		<div id="conference_zoomIn_div"><h4><a href="#"><i id="conference_zoomIn" class="icon-zoom-in">See older papers</i></h4></a></div>
-		<div id="conference_zoomOut_div"><h4><a href="#"><i id="conference_zoomOut" class="icon-zoom-out">Hide older papers</i></h4></a></div>
-	<div id="olderConference">
+		<div id="conference_zoomIn_div"><h4><a href="#olderConference_a"><i id="conference_zoomIn" class="icon-zoom-in">See older papers</i></h4></a></div>
+		<div id="conference_zoomOut_div"><h4><a href="#olderConference_a"><i id="conference_zoomOut" class="icon-zoom-out">Hide older papers</i></h4></a></div>
+	<a id="olderConference_a"><div id="olderConference">
 	  {% endif %}
   
       <h3 class="conference">
@@ -37,7 +37,7 @@
       <div class="compactPost">
         {{ post.content }}
       </div>
-	  {% if counter >= 4 and forloop.last%}</div>{% endif %}
+	  {% if counter >= 4 and forloop.last%}</div></a>{% endif %}
 	  {% assign counter=counter | plus:1 %}
   {% endfor %}
   </div>
