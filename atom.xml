@@ -1,0 +1,24 @@
+---
+layout: nil
+---
+<feed xmlns="http://www.w3.org/2005/Atom">
+ 
+    <title type="text" xml:lang="en">Brice Morin's Website</title>
+    <link href="{{ site.url }}"/>
+    <link type="application/atom+xml" rel="self" href="{{ site.url }}/atom.xml"/>
+    <updated>{{ site.time | date_to_xmlschema }}</updated>
+    <author>
+        <name>{{ site.author }}</name>
+    </author>
+    <id>{{ site.url }}</id>
+    <rights>Copyright (c) {{ site.time | date: "%Y" }}, {{ site.author }}; all rights reserved.</rights>{% for post in site.categories.paper %}
+    <entry>
+        <title type="text" xml:lang="en">{{ post.title | xml_escape }}</title>
+        <id>{{ page.id }}{{ post.id }}</id>
+        <link rel="alternate" type="text/html" href="{{ site.url }}{{ post.url }}"/>
+	<updated>{{ post.date | date_to_xmlschema }}</updated>{% for category in post.categories %}
+        <category term="{{ category | downcase }}" />{% endfor %}
+        <content type="html" xml:lang="en" xml:base="{{ site.url }}/">{{ post.content | xml_escape }}</content>
+    </entry>{% endfor %}
+
+</feed>
