@@ -1,10 +1,13 @@
 {
 "type": "FeatureCollection",
 "features": [
+{ "type": "Feature", "properties": { "Event":"Full-time researcher at SINTEF ICT" }, "geometry": { "type": "Point", "coordinates": [ 10.75, 59.95 ] } },
+{ "type": "Feature", "properties": { "Event":"Various meeting" }, "geometry": { "type": "Point", "coordinates": [ 10.393333, 63.429722 ] } },
 { "type": "Feature", "properties": { "Event":"ArrowHead meeting" }, "geometry": { "type": "Point", "coordinates": [ 22.153889, 65.584444 ] } },
 { "type": "Feature", "properties": { "Event":"ArrowHead meeting" }, "geometry": { "type": "Point", "coordinates": [ 15.433333, 47.066667 ] } },
 { "type": "Feature", "properties": { "Event":"ArrowHead meeting" }, "geometry": { "type": "Point", "coordinates": [ 5.7222, 45.2002 ] } },
 { "type": "Feature", "properties": { "Event":"CESAR review" }, "geometry": { "type": "Point", "coordinates": [ 7.7, 45.066667 ] } },
+{ "type": "Feature", "properties": { "Event":"REMICS review and ServiceWave" }, "geometry": { "type": "Point", "coordinates": [ 16.916667, 52.4 ] } },
 { "type": "Feature", "properties": { "Event":"REMICS meeting" }, "geometry": { "type": "Point", "coordinates": [ 23.333333, 42.7 ] } },
 { "type": "Feature", "properties": { "Event":"REMICS meeting" }, "geometry": { "type": "Point", "coordinates": [ 18.942778, 69.682778 ] } },
 { "type": "Feature", "properties": { "Event":"REMICS meetings" }, "geometry": { "type": "Point", "coordinates": [ 2.65, 39.566667 ] } },
