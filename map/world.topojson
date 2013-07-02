@@ -1,6 +1,8 @@
 {
 "type": "FeatureCollection",
 "features": [
+{ "type": "Feature", "properties": { "Event":"ArrowHead meeting" }, "geometry": { "type": "Point", "coordinates": [ 22.153889, 65.584444 ] } },
+{ "type": "Feature", "properties": { "Event":"REMICS meeting" }, "geometry": { "type": "Point", "coordinates": [ 18.942778, 69.682778 ] } },
 { "type": "Feature", "properties": { "Event":"REMICS meetings" }, "geometry": { "type": "Point", "coordinates": [ 2.65, 39.566667 ] } },
 { "type": "Feature", "properties": { "Event":"Modeling Workshop at Bellairs", "Year":"2013" }, "geometry": { "type": "Point", "coordinates": [ -59.616667, 13.1 ] } },
 { "type": "Feature", "properties": { "Event":"Various project reviews" }, "geometry": { "type": "Point", "coordinates": [ 4.35, 50.85 ] } },
