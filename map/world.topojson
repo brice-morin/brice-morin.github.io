@@ -1,6 +1,7 @@
 {
 "type": "FeatureCollection",
 "features": [
-{ "type": "Feature", "properties": { "DESCRIPTION": "ICSE Conference", "Year":"2009" }, "geometry": { "type": "Point", "coordinates": [ -123.1, 49.25 ] } }
+{ "type": "Feature", "properties": { "Event":"Paper at ICSE Conference", "Year":"2009" }, "geometry": { "type": "Point", "coordinates": [ -123.1, 49.25 ] } },
+{ "type": "Feature", "properties": { "Event":"3-Month stay during my PhD", "Year":"2008" }, "geometry": { "type": "Point", "coordinates": [ -2.801, 54.047 ] } }
 ]
 }
