@@ -10,6 +10,9 @@
 { "type": "Feature", "properties": { "Event":"Modeling Workshop at Bellairs", "Year":"2013" }, "geometry": { "type": "Point", "coordinates": [ -59.616667, 13.1 ] } },
 { "type": "Feature", "properties": { "Event":"Various project reviews" }, "geometry": { "type": "Point", "coordinates": [ 4.35, 50.85 ] } },
 { "type": "Feature", "properties": { "Event":"PhD", "Year":"2010" }, "geometry": { "type": "Point", "coordinates": [ -1.679444, 48.114722 ] } },
+{ "type": "Feature", "properties": { "Event":"Paper at MODELS Conference", "Year":"2011" }, "geometry": { "type": "Point", "coordinates": [ 11.383333, 47.266667 ] } },
+{ "type": "Feature", "properties": { "Event":"Paper at MODELS Conference", "Year":"2009" }, "geometry": { "type": "Point", "coordinates": [ -104.984722, 39.739167 ] } },
+{ "type": "Feature", "properties": { "Event":"Paper at MODELS Conference", "Year":"2008" }, "geometry": { "type": "Point", "coordinates": [ 1.444, 43.6045 ] } },
 { "type": "Feature", "properties": { "Event":"Paper at ICSE Conference", "Year":"2009" }, "geometry": { "type": "Point", "coordinates": [ -123.1, 49.25 ] } },
 { "type": "Feature", "properties": { "Event":"3-Month stay during my PhD", "Year":"2008" }, "geometry": { "type": "Point", "coordinates": [ -2.801, 54.047 ] } },
 { "type": "Feature", "properties": { "Event":"Master", "Year":"2007" }, "geometry": { "type": "Point", "coordinates": [ -1.679444, 48.114722 ] } }
