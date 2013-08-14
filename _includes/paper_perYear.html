@@ -9,10 +9,10 @@
         {% endunless %}
         {% assign currentYear = year %}
     <div>
-	{% if counter <= 4%} 
+	{% if counter <= 4 %} 
 	<h2 id="{{ currentYear }}">{{currentYear}}</h2>
 	{% elsif %}
-		{% if counter == 5%} 
+		{% if counter == 5 %} 
 	<h2>Older papers</h2>
 		{% endif %}
 	<a id="{{ currentYear }}_a"><div id="{{ currentYear }}_zoomIn_div"><h3><a href="#{{ currentYear }}_a"><i id="{{ currentYear }}_zoomIn" class="icon-zoom-in">Click to see {{ currentYear }} papers</i></a></h3></div>
