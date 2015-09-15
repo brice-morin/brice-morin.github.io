@@ -14,7 +14,15 @@ title: Brice Morin's publications per Year
 		<div id="jetsContent">
 		{% include paper_perYear.html %}
 		</div>
-        </article>		
+        </article>
+
+		<script>
+		var jets = new Jets({
+			searchTag: '#jetsSearch',
+			contentTag: '#jetsContent'
+		});
+		</script>
+		
       </div>
 
       {% include paper_contents.html %}
