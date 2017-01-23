@@ -20,13 +20,13 @@ title: Brice Morin's Positions and Education (CV)
 	  {% for post in site.categories.cv %}
       {% if post.categories contains 'diploma' %}
       <h3 class="diploma">
-      {% elsif post.categories contains 'work' %} 
-      <h3 class="work"> {% if forloop.index == lastDate %}Since{% endif %} 
+      {% elsif post.categories contains 'work' %}
+      <h3 class="work"> {% if forloop.index == lastDate %}Since{% endif %}
       {% endif%}
 
       {% if post.categories contains 'diploma' or post.categories contains 'work' %}
       {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
-    <div class="post">
+    <div class="compactPost">
       {{ post.content }}
     </div>
       {% endif %}

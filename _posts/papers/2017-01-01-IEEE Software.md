@@ -6,3 +6,5 @@ categories: [paper, journal]
 **Brice Morin**, Nicolas Harrand and Franck Fleurey
 
 To appear in IEEE Software, Special Issue on Internet of Things, 2017.
+
+[PDF](https://drive.google.com/open?id=0B8COpPaPIDHYX3BLWE5lUEliVEk)

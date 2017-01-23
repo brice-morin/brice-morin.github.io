@@ -1,5 +1,6 @@
 p {
   margin: 0em;
+  font-size: smaller;
 }
 
 .post {
@@ -44,14 +45,17 @@ p {
 }
 
 .project {
+  font-size: smaller;
   color: #6699FF;
 }
 
 .pastProject {
+  font-size: smaller;
   color: #666699;
 }
 
 .prototype {
+  font-size: smaller;
   color: #6699FF;
 }
 

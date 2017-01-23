@@ -14,7 +14,7 @@ title: Brice Morin's Students (CV)
 	  {% for post in site.categories.cv %}
             {% if post.categories contains 'student' %}
             <h3 class="student"> {{ post.title }} </h3>
-              <div class="post">
+              <div class="compactPost">
                 {{ post.content }}
              </div>
             {% endif %}
