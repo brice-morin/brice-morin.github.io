@@ -107,25 +107,17 @@ title: Brice Morin's publications statistics
   ];
 
   var options = {
-      dataLabels: {
-          style: {
-              colors: ['#fff']
-          }
-      },
       chart: {
           height: 380,
           type: 'bar',
           stacked: true,
+          backgroup: '#ddd'
       },
       plotOptions: {
           bar: {
               horizontal: true,
           },
       },
-      /*stroke: {
-          width: 1,
-          colors: ['#fff']
-      },*/
       series: [{
           name: 'Conferences',
           data: chartData.map(a => a.conference).map(a => a === 0 ? '' : a)
@@ -141,34 +133,16 @@ title: Brice Morin's publications statistics
       },{
           name: 'Book Chapters',
           data: chartData.map(a => a.chapter).map(a => a === 0 ? '' : a)
-      }/*,{
-          name: 'Others',
-          data: chartData.map(a => a.other).map(a => a === 0 ? '' : a)
-      }*/],
+      }],
       title: {
           text: 'Publications per type, per year'
       },
-      labels: {
-          style: {
-              colors: ['#ddd']
-          }
-      },
       xaxis: {
-          categories: chartData.map(a => a.year),
-          labels: {
-              style: {
-                  colors: ['#ddd']
-              }
-          }
+          categories: chartData.map(a => a.year)
       },
       yaxis: {
           title: {
               text: undefined
-          },
-          labels: {
-              style: {
-                  colors: ['#ddd']
-              }
           }
       },
       fill: {
