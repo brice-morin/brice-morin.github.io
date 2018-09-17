@@ -123,19 +123,19 @@ title: Brice Morin's publications statistics
       },
       series: [{
           name: 'Conferences',
-          data: chartData.map(a => a.conference)
+          data: chartData.map(a => a.conference).map(a => a === 0 ? null : val)
       },{
           name: 'Workshops',
-          data: chartData.map(a => a.workshop)
+          data: chartData.map(a => a.workshop).map(a => a === 0 ? null : val)
       },{
           name: 'Journals',
-          data: chartData.map(a => a.journal)
+          data: chartData.map(a => a.journal).map(a => a === 0 ? null : val)
       },{
           name: 'Invited talks',
-          data: chartData.map(a => a.invitedTalk)
+          data: chartData.map(a => a.invitedTalk).map(a => a === 0 ? null : val)
       },{
           name: 'Book Chapters',
-          data: chartData.map(a => a.chapter)
+          data: chartData.map(a => a.chapter).map(a => a === 0 ? null : val)
       }/*,{
           name: 'Others',
           data: chartData.map(a => a.other)
@@ -161,7 +161,7 @@ title: Brice Morin's publications statistics
           offsetX: 40
       }
   }
-
+  Apex.colors = ['#99CCCC', '#99FF99', '#6699FF', '#FFFF66', '#666699'];
   chart = new ApexCharts(
       document.querySelector("#chartdiv"),
       options
