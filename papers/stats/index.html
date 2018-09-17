@@ -123,22 +123,22 @@ title: Brice Morin's publications statistics
       },
       series: [{
           name: 'Conferences',
-          data: chartData.map(a => a.conference).map(a => a === 0 ? null : val)
+          data: chartData.map(a => a.conference).map(a => a === 0 ? null : a)
       },{
           name: 'Workshops',
-          data: chartData.map(a => a.workshop).map(a => a === 0 ? null : val)
+          data: chartData.map(a => a.workshop).map(a => a === 0 ? null : a)
       },{
           name: 'Journals',
-          data: chartData.map(a => a.journal).map(a => a === 0 ? null : val)
+          data: chartData.map(a => a.journal).map(a => a === 0 ? null : a)
       },{
           name: 'Invited talks',
-          data: chartData.map(a => a.invitedTalk).map(a => a === 0 ? null : val)
+          data: chartData.map(a => a.invitedTalk).map(a => a === 0 ? null : a)
       },{
           name: 'Book Chapters',
-          data: chartData.map(a => a.chapter).map(a => a === 0 ? null : val)
+          data: chartData.map(a => a.chapter).map(a => a === 0 ? null : a)
       }/*,{
           name: 'Others',
-          data: chartData.map(a => a.other)
+          data: chartData.map(a => a.other).map(a => a === 0 ? null : a)
       }*/],
       title: {
           text: 'Publications per type, per year'
