@@ -10,172 +10,6 @@ title: Brice Morin's publications statistics
 
       <div class="unit four-fifths">
         <article>
-<script>
-var chart;
-{% assign workshop = 0 %}
-{% assign conference = 0 %}
-{% assign journal = 0 %}
-{% assign invitedTalk = 0 %}
-{% assign chapter = 0 %}
-{% assign other = 0 %}
-{% assign workshopTotal = 0 %}
-{% assign conferenceTotal = 0 %}
-{% assign journalTotal = 0 %}
-{% assign invitedTalkTotal = 0 %}
-{% assign chapterTotal = 0 %}
-{% assign otherTotal = 0 %}
-{% assign currentYear = 0 %}
-{% assign counter = 0 %}
-var chartData = [
-{% for post in site.categories.paper%}
-
-  {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
-  {% if currentYear !=  year or forloop.last%}
-
-    {% if forloop.last%}
- {% if post.categories contains 'conference' %}
-   {% assign conference=conference | plus:1 %}
- {% elsif post.categories contains 'workshop' %}
-   {% assign workshop=workshop | plus:1 %}
- {% elsif post.categories contains 'journal' %}
-   {% assign journal=journal | plus:1 %}
- {% elsif post.categories contains 'invited talk' %}
-   {% assign invitedTalk=invitedTalk | plus:1 %}
- {% elsif post.categories contains 'chapter' %}
-   {% assign chapter=chapter | plus:1 %}
- {% else %}
-   {% assign other=other | plus:1 %}
- {% endif%}
-    {% endif %}
-
-
-    {% if counter > 1 %},{% endif %}
-    {% assign counter=counter | plus:1 %}
-    {% if counter > 1 %}
- {
-   year: "{{currentYear}}",
-   journal: {{journal}},
-   conference: {{conference}},
-   workshop: {{workshop}},
-   invitedTalk: {{invitedTalk}},
-   chapter: {{chapter}},
-   other: {{other}}
- }
-      {% assign workshopTotal=workshopTotal | plus:workshop%}
-      {% assign conferenceTotal=conferenceTotal | plus:conference%}
-      {% assign journalTotal=journalTotal | plus:journal%}
-      {% assign invitedTalkTotal=invitedTalkTotal | plus:invitedTalk%}
-      {% assign chapterTotal=chapterTotal | plus:chapter%}
-      {% assign otherTotal=otherTotal | plus:other%}
-      {% assign workshop = 0 %}
-      {% assign conference = 0 %}
-      {% assign journal = 0 %}
-      {% assign invitedTalk = 0 %}
-      {% assign chapter = 0 %}
-      {% assign other = 0 %}
-    {% endif %}
-    {% assign currentYear = year %}
-  {% endif %}
-
- {% if post.categories contains 'conference' %}
-   {% assign conference=conference | plus:1 %}
- {% elsif post.categories contains 'workshop' %}
-   {% assign workshop=workshop | plus:1 %}
- {% elsif post.categories contains 'journal' %}
-   {% assign journal=journal | plus:1 %}
- {% elsif post.categories contains 'invited talk' %}
-   {% assign invitedTalk=invitedTalk | plus:1 %}
- {% elsif post.categories contains 'chapter' %}
-   {% assign chapter=chapter | plus:1 %}
- {% else %}
-   {% assign other=other | plus:1 %}
- {% endif%}
-
-
-{% endfor %}
-];
-
-
-var options = {
-    chart: {
-        height: 380,
-        type: 'bar',
-        stacked: true,
-    },
-    plotOptions: {
-        bar: {
-            horizontal: true,
-        },
-
-    },
-    stroke: {
-        width: 1,
-        colors: ['#fff']
-    },
-    series: [{
-        name: 'Conferences',
-        data: chartData.map(a => a.conference)
-    },{
-        name: 'Workshops',
-        data: chartData.map(a => a.workshop)
-    },{
-        name: 'Journals',
-        data: chartData.map(a => a.journal)
-    },{
-        name: 'Invited talks',
-        data: chartData.map(a => a.invitedTalk)
-    },{
-        name: 'Book Chapters',
-        data: chartData.map(a => a.chapter)
-    },{
-        name: 'Others',
-        data: chartData.map(a => a.other)
-    }],
-    title: {
-        text: 'Publications per type, per year'
-    },
-    xaxis: {
-        categories: chartData.map(a => a.year),
-        labels: {
-            formatter: function(val) {
-                return val + " publications"
-            }
-        }
-    },
-    yaxis: {
-        title: {
-            text: undefined
-        },
-
-    },
-    tooltip: {
-        y: {
-            formatter: function(val) {
-            return val + " publications"
-        }
-        }
-    },
-    fill: {
-        opacity: 1
-
-    },
-
-    legend: {
-        position: 'top',
-        horizontalAlign: 'left',
-        offsetX: 40
-    }
-}
-
-var chart = new ApexCharts(
-    document.querySelector("#chartdiv"),
-    options
-);
-
-chart.render();
-</script>
-
-
 
 <h2>Publications per type, per year</h2>
 {% assign counter=counter | times:50 %}
@@ -193,3 +27,154 @@ chart.render();
 
     </div>
   </section>
+
+<script>
+  var chart;
+  {% assign workshop = 0 %}
+  {% assign conference = 0 %}
+  {% assign journal = 0 %}
+  {% assign invitedTalk = 0 %}
+  {% assign chapter = 0 %}
+  {% assign other = 0 %}
+  {% assign workshopTotal = 0 %}
+  {% assign conferenceTotal = 0 %}
+  {% assign journalTotal = 0 %}
+  {% assign invitedTalkTotal = 0 %}
+  {% assign chapterTotal = 0 %}
+  {% assign otherTotal = 0 %}
+  {% assign currentYear = 0 %}
+  {% assign counter = 0 %}
+  var chartData = [
+  {% for post in site.categories.paper%}
+    {% capture year %}{{post.date | date: "%Y"}}{% endcapture %}
+    {% if currentYear !=  year or forloop.last%}
+      {% if forloop.last%}
+        {% if post.categories contains 'conference' %}
+          {% assign conference=conference | plus:1 %}
+        {% elsif post.categories contains 'workshop' %}
+          {% assign workshop=workshop | plus:1 %}
+        {% elsif post.categories contains 'journal' %}
+          {% assign journal=journal | plus:1 %}
+        {% elsif post.categories contains 'invited talk' %}
+          {% assign invitedTalk=invitedTalk | plus:1 %}
+        {% elsif post.categories contains 'chapter' %}
+          {% assign chapter=chapter | plus:1 %}
+        {% else %}
+          {% assign other=other | plus:1 %}
+        {% endif%}
+      {% endif %}
+      {% if counter > 1 %},{% endif %}
+      {% assign counter=counter | plus:1 %}
+      {% if counter > 1 %}
+   {
+     year: "{{currentYear}}",
+     journal: {{journal}},
+     conference: {{conference}},
+     workshop: {{workshop}},
+     invitedTalk: {{invitedTalk}},
+     chapter: {{chapter}},
+     other: {{other}}
+   }
+        {% assign workshopTotal=workshopTotal | plus:workshop%}
+        {% assign conferenceTotal=conferenceTotal | plus:conference%}
+        {% assign journalTotal=journalTotal | plus:journal%}
+        {% assign invitedTalkTotal=invitedTalkTotal | plus:invitedTalk%}
+        {% assign chapterTotal=chapterTotal | plus:chapter%}
+        {% assign otherTotal=otherTotal | plus:other%}
+        {% assign workshop = 0 %}
+        {% assign conference = 0 %}
+        {% assign journal = 0 %}
+        {% assign invitedTalk = 0 %}
+        {% assign chapter = 0 %}
+        {% assign other = 0 %}
+      {% endif %}
+      {% assign currentYear = year %}
+    {% endif %}
+    {% if post.categories contains 'conference' %}
+      {% assign conference=conference | plus:1 %}
+    {% elsif post.categories contains 'workshop' %}
+      {% assign workshop=workshop | plus:1 %}
+    {% elsif post.categories contains 'journal' %}
+      {% assign journal=journal | plus:1 %}
+    {% elsif post.categories contains 'invited talk' %}
+      {% assign invitedTalk=invitedTalk | plus:1 %}
+    {% elsif post.categories contains 'chapter' %}
+      {% assign chapter=chapter | plus:1 %}
+    {% else %}
+      {% assign other=other | plus:1 %}
+    {% endif%}
+  {% endfor %}
+  ];
+
+  var options = {
+      chart: {
+          height: 380,
+          type: 'bar',
+          stacked: true,
+      },
+      plotOptions: {
+          bar: {
+              horizontal: true,
+          },
+      },
+      stroke: {
+          width: 1,
+          colors: ['#fff']
+      },
+      series: [{
+          name: 'Conferences',
+          data: chartData.map(a => a.conference)
+      },{
+          name: 'Workshops',
+          data: chartData.map(a => a.workshop)
+      },{
+          name: 'Journals',
+          data: chartData.map(a => a.journal)
+      },{
+          name: 'Invited talks',
+          data: chartData.map(a => a.invitedTalk)
+      },{
+          name: 'Book Chapters',
+          data: chartData.map(a => a.chapter)
+      },{
+          name: 'Others',
+          data: chartData.map(a => a.other)
+      }],
+      title: {
+          text: 'Publications per type, per year'
+      },
+      xaxis: {
+          categories: chartData.map(a => a.year),
+          labels: {
+              formatter: function(val) {return val + " publications"}
+          }
+      },
+      yaxis: {
+          title: {
+              text: undefined
+          },
+
+      },
+      tooltip: {
+          y: {
+              formatter: function(val) {return val + " publications"}
+          }
+      },
+      fill: {
+          opacity: 1
+
+      },
+      legend: {
+          position: 'top',
+          horizontalAlign: 'left',
+          offsetX: 40
+      }
+  }
+
+  chart = new ApexCharts(
+      document.querySelector("#chartdiv"),
+      options
+  );
+
+  chart.render();
+</script>
