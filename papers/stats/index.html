@@ -36,15 +36,15 @@ var chartData = [
  {% if post.categories contains 'conference' %}
    {% assign conference=conference | plus:1 %}
  {% elsif post.categories contains 'workshop' %}
-   {% assign workshop=workshop | plus:1 %}  
+   {% assign workshop=workshop | plus:1 %}
  {% elsif post.categories contains 'journal' %}
-   {% assign journal=journal | plus:1 %}  
+   {% assign journal=journal | plus:1 %}
  {% elsif post.categories contains 'invited talk' %}
-   {% assign invitedTalk=invitedTalk | plus:1 %}  
+   {% assign invitedTalk=invitedTalk | plus:1 %}
  {% elsif post.categories contains 'chapter' %}
    {% assign chapter=chapter | plus:1 %}
  {% else %}
-   {% assign other=other | plus:1 %}  
+   {% assign other=other | plus:1 %}
  {% endif%}
     {% endif %}
 
@@ -75,25 +75,26 @@ var chartData = [
       {% assign other = 0 %}
     {% endif %}
     {% assign currentYear = year %}
-  {% endif %} 
+  {% endif %}
 
  {% if post.categories contains 'conference' %}
    {% assign conference=conference | plus:1 %}
  {% elsif post.categories contains 'workshop' %}
-   {% assign workshop=workshop | plus:1 %}  
+   {% assign workshop=workshop | plus:1 %}
  {% elsif post.categories contains 'journal' %}
-   {% assign journal=journal | plus:1 %}  
+   {% assign journal=journal | plus:1 %}
  {% elsif post.categories contains 'invited talk' %}
-   {% assign invitedTalk=invitedTalk | plus:1 %}  
+   {% assign invitedTalk=invitedTalk | plus:1 %}
  {% elsif post.categories contains 'chapter' %}
    {% assign chapter=chapter | plus:1 %}
  {% else %}
-   {% assign other=other | plus:1 %}  
+   {% assign other=other | plus:1 %}
  {% endif%}
 
 
 {% endfor %}
 ];
+
 
 AmCharts.ready(function() {
    // SERIALL CHART
@@ -111,7 +112,7 @@ AmCharts.ready(function() {
    categoryAxis.axisAlpha = 0;
    categoryAxis.gridPosition = "start";
 
-   // value                      
+   // value
    var valueAxis = new AmCharts.ValueAxis();
    valueAxis.stackType = "regular";
    valueAxis.gridAlpha = 0.1;
@@ -131,7 +132,7 @@ AmCharts.ready(function() {
    graph.color = "#000000";
    chart.addGraph(graph);
 
-   // second graph                              
+   // second graph
    graph = new AmCharts.AmGraph();
    graph.title = "Conferences";
    graph.labelText = "[[value]]";
@@ -143,7 +144,7 @@ AmCharts.ready(function() {
    graph.color = "#000000";
    chart.addGraph(graph);
 
-   // thirdt graph              
+   // thirdt graph
    graph = new AmCharts.AmGraph();
    graph.title = "Workshops";
    graph.labelText = "[[value]]";
@@ -179,7 +180,7 @@ AmCharts.ready(function() {
    graph.color = "#000000";
    chart.addGraph(graph);
 
-   // sixth graph  
+   // sixth graph
    graph = new AmCharts.AmGraph();
    graph.title = "Other";
    graph.labelText = "[[value]]";
@@ -254,12 +255,92 @@ AmCharts.ready(function() {
 });
 
 
-</script>      
+</script>
 
+<script>
+var options = {
+    chart: {
+        height: 380,
+        type: 'bar',
+        stacked: true,
+    },
+    plotOptions: {
+        bar: {
+            horizontal: true,
+        },
+
+    },
+    stroke: {
+        width: 1,
+        colors: ['#fff']
+    },
+    series: [{
+        name: 'Conferences',
+        data: {{conferenceTotal}}
+    },{
+        name: 'Workshops',
+        data: {{workshopTotal}}
+    },{
+        name: 'Journals',
+        data: {{journalTotal}}
+    },{
+        name: 'Invited talks',
+        data: {{invitedTalkTotal}}
+    },{
+        name: 'Book Chapters',
+        data: {{chapterTotal}}
+    },{
+        name: 'Others',
+        data: {{otherTotal}}
+    }],
+    title: {
+        text: 'Publications per type, per year'
+    },
+    xaxis: {
+        categories: {{year}},
+        labels: {
+            formatter: function(val) {
+                return val + " publications"
+            }
+        }
+    },
+    yaxis: {
+        title: {
+            text: undefined
+        },
+
+    },
+    tooltip: {
+        y: {
+            formatter: function(val) {
+            return val + " publications"
+        }
+        }
+    },
+    fill: {
+        opacity: 1
+
+    },
+
+    legend: {
+        position: 'top',
+        horizontalAlign: 'left',
+        offsetX: 40
+    }
+}
+
+var chart = new ApexCharts(
+    document.querySelector("#chart"),
+    options
+);
+
+chart.render();
+
+</script>
 
 
 <h2>Publications per type, per year</h2>
-{% assign counter=counter | times:50 %}  
+{% assign counter=counter | times:50 %}
 <div id="chartdiv" style="width: 100%; height: {{counter}}px;"></div>
 
 <!--<h2>Publications per type, accumulated</h2>
