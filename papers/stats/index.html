@@ -136,18 +136,15 @@ title: Brice Morin's publications statistics
       },{
           name: 'Book Chapters',
           data: chartData.map(a => a.chapter)
-      },{
+      }/*,{
           name: 'Others',
           data: chartData.map(a => a.other)
-      }],
+      }*/],
       title: {
           text: 'Publications per type, per year'
       },
       xaxis: {
           categories: chartData.map(a => a.year),
-          labels: {
-              formatter: function(val) {return val + " publications"}
-          }
       },
       yaxis: {
           title: {
@@ -155,14 +152,8 @@ title: Brice Morin's publications statistics
           },
 
       },
-      tooltip: {
-          y: {
-              formatter: function(val) {return val + " publications"}
-          }
-      },
       fill: {
           opacity: 1
-
       },
       legend: {
           position: 'top',
