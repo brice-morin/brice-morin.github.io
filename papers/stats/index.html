@@ -107,6 +107,11 @@ title: Brice Morin's publications statistics
   ];
 
   var options = {
+      dataLabels: {
+          style: {
+              colors: ['#ddd']
+          }
+      },
       chart: {
           height: 380,
           type: 'bar',
@@ -123,22 +128,22 @@ title: Brice Morin's publications statistics
       },
       series: [{
           name: 'Conferences',
-          data: chartData.map(a => a.conference).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.conference).map(a => a === 0 ? '' : a)
       },{
           name: 'Workshops',
-          data: chartData.map(a => a.workshop).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.workshop).map(a => a === 0 ? '' : a)
       },{
           name: 'Journals',
-          data: chartData.map(a => a.journal).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.journal).map(a => a === 0 ? '' : a)
       },{
           name: 'Invited talks',
-          data: chartData.map(a => a.invitedTalk).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.invitedTalk).map(a => a === 0 ? '' : a)
       },{
           name: 'Book Chapters',
-          data: chartData.map(a => a.chapter).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.chapter).map(a => a === 0 ? '' : a)
       }/*,{
           name: 'Others',
-          data: chartData.map(a => a.other).map(a => a === 0 ? null : a)
+          data: chartData.map(a => a.other).map(a => a === 0 ? '' : a)
       }*/],
       title: {
           text: 'Publications per type, per year'
