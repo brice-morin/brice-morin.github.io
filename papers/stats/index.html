@@ -109,7 +109,7 @@ title: Brice Morin's publications statistics
   var options = {
       dataLabels: {
           style: {
-              colors: ['#ddd']
+              colors: ['#fff']
           }
       },
       chart: {
@@ -122,10 +122,10 @@ title: Brice Morin's publications statistics
               horizontal: true,
           },
       },
-      stroke: {
+      /*stroke: {
           width: 1,
           colors: ['#fff']
-      },
+      },*/
       series: [{
           name: 'Conferences',
           data: chartData.map(a => a.conference).map(a => a === 0 ? '' : a)
@@ -150,12 +150,21 @@ title: Brice Morin's publications statistics
       },
       xaxis: {
           categories: chartData.map(a => a.year),
+          labels: {
+              style: {
+                  colors: ['#ddd']
+              }
+          }
       },
       yaxis: {
           title: {
               text: undefined
           },
-
+          labels: {
+              style: {
+                  colors: ['#ddd']
+              }
+          }
       },
       fill: {
           opacity: 1
