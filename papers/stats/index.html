@@ -96,168 +96,6 @@ var chartData = [
 ];
 
 
-AmCharts.ready(function() {
-   // SERIALL CHART
-   chart = new AmCharts.AmSerialChart();
-   chart.dataProvider = chartData;
-   chart.categoryField = "year";
-   chart.plotAreaBorderAlpha = 0.2;
-   chart.rotate = true;
-   chart.color = "#FFFFFF";
-
-   // AXES
-   // Category
-   var categoryAxis = chart.categoryAxis;
-   categoryAxis.gridAlpha = 0.1;
-   categoryAxis.axisAlpha = 0;
-   categoryAxis.gridPosition = "start";
-
-   // value
-   var valueAxis = new AmCharts.ValueAxis();
-   valueAxis.stackType = "regular";
-   valueAxis.gridAlpha = 0.1;
-   valueAxis.axisAlpha = 0;
-   chart.addValueAxis(valueAxis);
-
-   // GRAPHS
-   // firstgraph
-   var graph = new AmCharts.AmGraph();
-   graph.title = "Journals";
-   graph.labelText = "[[value]]";
-   graph.valueField = "journal";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#6699FF";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // second graph
-   graph = new AmCharts.AmGraph();
-   graph.title = "Conferences";
-   graph.labelText = "[[value]]";
-   graph.valueField = "conference";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#99CCCC";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // thirdt graph
-   graph = new AmCharts.AmGraph();
-   graph.title = "Workshops";
-   graph.labelText = "[[value]]";
-   graph.valueField = "workshop";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#99FF99";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // fourth graph
-   graph = new AmCharts.AmGraph();
-   graph.title = "Invited Talks";
-   graph.labelText = "[[value]]";
-   graph.valueField = "invitedTalk";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#FFFF66";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // fifth graph
-   graph = new AmCharts.AmGraph();
-   graph.title = "Bookt Chapter";
-   graph.labelText = "[[value]]";
-   graph.valueField = "chapter";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#666699";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // sixth graph
-   graph = new AmCharts.AmGraph();
-   graph.title = "Other";
-   graph.labelText = "[[value]]";
-   graph.valueField = "other";
-   graph.type = "column";
-   graph.lineAlpha = 0;
-   graph.fillAlphas = 1;
-   graph.lineColor = "#D8E0BD";
-   graph.color = "#000000";
-   chart.addGraph(graph);
-
-   // LEGEND
-   var legend = new AmCharts.AmLegend();
-   legend.position = "bottom";
-   legend.borderAlpha = 0.3;
-   legend.horizontalGap = 10;
-   legend.switchType = "v";
-   chart.addLegend(legend);
-
-   // WRITE
-   chart.write("chartdiv");
-});
-
-
-var chartDataTotal = [{
-    type: "Journals",
-    total: {{journalTotal}}},
-{
-    type: "Conferences",
-    total: {{conferenceTotal}}},
-{
-    type: "Workshops",
-    total: {{workshopTotal}}},
-{
-    type: "Book chapters",
-    total: {{chapterTotal}}},
-{
-    type: "Invited Talks",
-    total: {{invitedTalkTotal}}},
-{
-    type: "Other",
-    total: {{otherTotal}}}];
-
-AmCharts.ready(function() {
-    // RADAR CHART
-    chart = new AmCharts.AmRadarChart();
-    chart.dataProvider = chartDataTotal;
-    chart.categoryField = "type";
-    chart.startDuration = 2;
-    chart.color="#FFFFFF";
-
-    // VALUE AXIS
-    var valueAxis = new AmCharts.ValueAxis();
-    valueAxis.axisAlpha = 0.15;
-    valueAxis.minimum = 0;
-    valueAxis.dashLength = 3;
-    valueAxis.axisTitleOffset = 20;
-    valueAxis.gridCount = 5;
-    chart.addValueAxis(valueAxis);
-
-    // GRAPH
-    var graph = new AmCharts.AmGraph();
-    graph.valueField = "total";
-    graph.bullet = "round";
-    graph.balloonText = "[[value]] papers";
-    graph.color = "#FFFFFF";
-    chart.addGraph(graph);
-
-
-    // WRITE
-    chart.write("chartdivTotal");
-});
-
-
-</script>
-
-<script>
 var options = {
     chart: {
         height: 380,
@@ -276,28 +114,28 @@ var options = {
     },
     series: [{
         name: 'Conferences',
-        data: {{conferenceTotal}}
+        data: chartData.map(a => a.conference)
     },{
         name: 'Workshops',
-        data: {{workshopTotal}}
+        data: chartData.map(a => a.workshop)
     },{
         name: 'Journals',
-        data: {{journalTotal}}
+        data: chartData.map(a => a.journal)
     },{
         name: 'Invited talks',
-        data: {{invitedTalkTotal}}
+        data: chartData.map(a => a.invitedTalk)
     },{
         name: 'Book Chapters',
-        data: {{chapterTotal}}
+        data: chartData.map(a => a.chapter)
     },{
         name: 'Others',
-        data: {{otherTotal}}
+        data: chartData.map(a => a.other)
     }],
     title: {
         text: 'Publications per type, per year'
     },
     xaxis: {
-        categories: {{year}},
+        categories: chartData.map(a => a.year),
         labels: {
             formatter: function(val) {
                 return val + " publications"
@@ -330,13 +168,13 @@ var options = {
 }
 
 var chart = new ApexCharts(
-    document.querySelector("#chart"),
+    document.querySelector("#chartdiv"),
     options
 );
 
 chart.render();
-
 </script>
+
 
 
 <h2>Publications per type, per year</h2>
