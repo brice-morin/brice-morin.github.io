@@ -3,7 +3,7 @@ safe: false
 lsi: false
 highlighter: rouge
 permalink: /:categories/:year/:title/
-url: http://brice-morin.info
+url: https://brice-morin.info
 google_analytics_id: UA-40793073-1
 author: Brice Morin
 future: true
