@@ -6,3 +6,6 @@ permalink: /:categories/:year/:title/
 url: https://brice-morin.info
 author: Brice Morin
 future: true
+collections:
+  breakout:
+    output: true
