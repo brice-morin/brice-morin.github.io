@@ -1,0 +1,3544 @@
+thing fragment RndJS {
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(246)) + 5` as Byte
+	end
+}
+thing BreakoutGameBrowserRND includes BreakoutGameBrowser , RndJS {
+}
+thing DisplayBrowserRND includes DisplayBrowser , RndJS {
+}
+thing SoundControllerBrowserRND includes SoundControllerBrowser , RndJS @js_include `https://cdnjs.cloudflare.com/ajax/libs/tone/0.10.0/Tone.min.js` {
+}
+thing VelocityControllerRND includes VelocityController , RndJS {
+}
+thing TimerJSRND includes TimerJS , RndJS {
+}
+object Canvas
+object CanvasContext
+thing DisplayBrowser includes Display , ControllerMsgs {
+	provided port vctrl {
+		sends velocitydx sends velocityvar333dy sends positiony sends positionvar334x sends velocitydx_bis sends velocityvar333dy_bis sends positiony_bis sends positionvar334x_bis
+	}
+	readonly property SCALE : UInt8 = 5
+	property XFRAMESIZE : UInt16
+	property YFRAMESIZE : UInt16
+	property Buffer : CanvasContext
+	property BufferCanvas : Canvas
+	property Display : CanvasContext
+	function initDisplay(xsize : UInt8, ysize : UInt8) do
+		XFRAMESIZE = xsize
+		YFRAMESIZE = ysize
+		`
+      document.body.style.backgroundColor = "gray";
+
+      /* Create buffer canvas */
+      var buffer = document.createElement("canvas");
+      buffer.setAttribute("width", ` & XFRAMESIZE & `);
+      buffer.setAttribute("height", ` & YFRAMESIZE & `);
+      buffer.style.imageRendering = "pixelated";
+      ` & BufferCanvas & ` = buffer;
+
+      var bufferCtx = buffer.getContext("2d");
+      bufferCtx.imageSmoothingEnabled = false;
+      bufferCtx.mozImageSmoothingEnabled = false;
+      bufferCtx.webkitImageSmoothingEnabled = false;
+      bufferCtx.msImageSmoothingEnabled = false;
+      ` & Buffer & ` = bufferCtx;
+
+      /* Create the display canvas */
+      var display = document.createElement("canvas");
+      display.setAttribute("width", ` & XFRAMESIZE * SCALE & `);
+      display.setAttribute("height", ` & YFRAMESIZE * SCALE & `);
+
+      var displayCtx = display.getContext("2d");
+      displayCtx.imageSmoothingEnabled = false;
+      displayCtx.mozImageSmoothingEnabled = false;
+      displayCtx.webkitImageSmoothingEnabled = false;
+      displayCtx.msImageSmoothingEnabled = false;
+
+      ` & Display & ` = displayCtx;
+
+      // Put it in the middle of the window
+      display.style.position = "absolute";
+      display.style.left = "50%";
+      display.style.top = "50%";
+      display.style.marginLeft = ` & -XFRAMESIZE / 2 * SCALE & `+"px";
+      display.style.marginTop = ` & -YFRAMESIZE / 2 * SCALE & `+"px";
+      display.style.cursor = "none";
+      document.body.appendChild(display);
+
+      // Add mouse over events
+      display.addEventListener("mousemove", (e) => {
+        var mouseX = e.offsetX/(` & XFRAMESIZE * SCALE & `); // [0,1]
+
+        // TODO: Some hardcoded numbers
+        var dispX = mouseX*10240; //XMAX
+        var posX = (dispX-5120)*200/8406;
+        posX = Math.max(-100, Math.min(100, posX));
+
+        `
+		do
+			if (26 < 132) do
+				vctrl!positionvar334x(0x25, 0x77, `posX` as Int16)
+			end
+			else do
+				vctrl!positionvar334x_bis(0x65, 0x25, `posX` as Int16)
+			end
+			if (17 < 88) do
+				vctrl!positiony(0, 0x24)
+			end
+			else do
+				vctrl!positiony_bis(0xAB, 0)
+			end
+		end
+	`
+      });
+    `
+		clearScreen()
+	`
+      document.addEventListener("keydown", (e) => {
+        if (e.key == "ArrowLeft") {
+          `
+		do
+			if (206 < 140) do
+				vctrl!velocitydx(0xEA, -8)
+			end
+			else do
+				vctrl!velocitydx_bis(0x7E, -8)
+			end
+			if (159 < 86) do
+				vctrl!velocityvar333dy(0x2F, 0, 0x79)
+			end
+			else do
+				vctrl!velocityvar333dy_bis(0x2F, 0x34, 0)
+			end
+		end
+	`
+        } else if (e.key == "ArrowRight") {
+          `
+		do
+			if (3 < 30) do
+				vctrl!velocityvar333dy(0x8B, 0, 0x1B)
+			end
+			else do
+				vctrl!velocityvar333dy_bis(0x8B, 0x40, 0)
+			end
+			if (67 < 84) do
+				vctrl!velocitydx(0xCB, 8)
+			end
+			else do
+				vctrl!velocitydx_bis(0x99, 8)
+			end
+		end
+	`
+        }
+      });
+      document.addEventListener("keyup", (e) => {
+        if (e.key == "ArrowLeft" || e.key == "ArrowRight") {
+          `
+		do
+			if (185 < 253) do
+				vctrl!velocitydx(0xD9, 0)
+			end
+			else do
+				vctrl!velocitydx_bis(0xD5, 0)
+			end
+			if (245 < 180) do
+				vctrl!velocityvar333dy(0xD4, 0, 0x36)
+			end
+			else do
+				vctrl!velocityvar333dy_bis(0xD4, 0x53, 0)
+			end
+		end
+	`
+        }
+      });
+    `
+	`
+      window.setPadPosition = (x) => { //[-100, 100]
+        `
+		do
+			if (38 < 165) do
+				vctrl!positionvar334x(0xC6, 0x20, `x` as Int16)
+			end
+			else do
+				vctrl!positionvar334x_bis(0xAF, 0xC6, `x` as Int16)
+			end
+			if (187 < 90) do
+				vctrl!positiony(0, 0x72)
+			end
+			else do
+				vctrl!positiony_bis(0xC1, 0)
+			end
+		end
+	`
+      };
+    `
+	end
+	function destroyDisplay() do
+	end
+	function updateDisplay() do
+		`` & Display & `.drawImage(` & BufferCanvas & `, 0, 0, ` & XFRAMESIZE * SCALE & `, ` & YFRAMESIZE * SCALE & `);`
+	end
+	function clearScreen() do
+		setColor(0, 0, 0)
+		fillRect(0, 0, XFRAMESIZE, YFRAMESIZE)
+		updateDisplay()
+	end
+	function setColor(r : UInt8, g : UInt8, b : UInt8) do
+		`
+      ` & Buffer & `.strokeStyle = "rgb("+` & r & `+", "+` & g & `+", "+` & b & `+")";
+      ` & Buffer & `.fillStyle = "rgb("+` & r & `+", "+` & g & `+", "+` & b & `+")";
+    `
+	end
+	function drawRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8) do
+		`
+      var xr = Math.floor(` & x & `);
+      var yr = Math.floor(` & y & `);
+      var wr = Math.floor(` & width & `);
+      var hr = Math.floor(` & height & `);
+      ` & Buffer & `.fillRect(xr, yr, wr, 1);
+      ` & Buffer & `.fillRect(xr, yr+hr-1, wr, 1);
+      ` & Buffer & `.fillRect(xr, yr, 1, hr);
+      ` & Buffer & `.fillRect(xr+wr-1, yr, 1, hr);
+    `
+	end
+	function fillRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8) do
+		`
+      var xr = Math.floor(` & x & `);
+      var yr = Math.floor(` & y & `);
+      var wr = Math.floor(` & width & `);
+      var hr = Math.floor(` & height & `);
+      ` & Buffer & `.fillRect(xr, yr, wr, hr);
+    `
+	end
+}
+object Synth
+thing SoundControllerBrowser includes Sound @js_include `https://cdnjs.cloudflare.com/ajax/libs/tone/0.10.0/Tone.min.js` {
+	readonly property synth : Synth = `new Tone.Synth().toMaster()` as Synth
+	function tone(f : UInt16, t : UInt16) do
+		`` & synth & `.triggerAttackRelease(` & f & `, ` & t & `/1000)`
+	end
+}
+thing BreakoutGameBrowser includes DefaultBreakoutGame {
+	function quit() println "done!"
+	function timestamp() : UInt32 return `Date.now()` as UInt32
+	function usedMemory() : UInt32 do
+		return -1
+	end
+}
+thing fragment TimerMsgs @stl {
+	message timer_start(var342 : Byte @noise, var318 : Byte @noise, id : UInt8, time : UInt16)
+	message timer_timeout(var341 : Byte @noise, id : UInt8, var320 : Byte @noise)
+	message timer_cancel(id : UInt8, var319 : Byte @noise, var343 : Byte @noise)
+}
+thing fragment Timer includes TimerMsgs @stl {
+	provided port timer {
+		sends timer_timeout receives timer_start receives timer_cancel
+	}
+}
+object JSArray
+thing TimerJS includes Timer @stl {
+	property Timeouts : JSArray = `{}` as JSArray
+	function startTimer(id : UInt8, delay : UInt16) do
+		`
+      if (` & Timeouts & `[` & id & `] != undefined) {
+        `
+		cancel(id)
+		`
+      }
+      
+      ` & Timeouts & `[` & id & `] = setTimeout(() => {
+        `
+		timer!timer_timeout(0x53, id, 0x78)
+		`
+        ` & Timeouts & `[` & id & `] = undefined;
+      }, ` & delay & `);
+    `
+	end
+	function cancel(id : UInt8) do
+		`
+        if (` & Timeouts & `[` & id & `] != undefined) {
+          clearTimeout(` & Timeouts & `[` & id & `]);
+          ` & Timeouts & `[` & id & `] = undefined;
+        }
+      `
+	end
+	statechart SoftTimer init default {
+		state default {
+			internal
+			event m : timer?timer_start
+			guard m.time > 0
+			action startTimer(m.id, m.time)
+			internal
+			event m : timer?timer_start
+			guard m.time == 0
+			action timer!timer_timeout(0x7F, m.id, 0xD8)
+			internal cancel
+			event m : timer?timer_cancel
+			action cancel(m.id)
+		}
+	}
+}
+object DriftLess
+object TimerMap @go_type `map[uint8]*time.Timer`
+thing fragment DisplayMsgs {
+	message drawIntegerxdigitsvar326scaley(y : UInt8, digits : UInt8, var349 : Byte @noise, x : UInt8, scale : UInt8, var326 : Byte @noise)
+	message createxsize_bis(xsize : UInt8, var386 : Byte @noise)
+	message setBGColorvar323b_bis(var323 : Byte @noise, var381 : Byte @noise, b : UInt8)
+	message setBGColorgr(r : UInt8, var356 : Byte @noise, g : UInt8)
+	message setColorb_bis(b : UInt8, var368 : Byte @noise)
+	message clear_(var346 : Byte @noise)
+	message displayErrorvar332(var359 : Byte @noise, var332 : Byte @noise)
+	message fillRectxwidthvar325_bis(x : UInt8, width : UInt8, var325 : Byte @noise, var375 : Byte @noise)
+	message fillRectxwidthvar325(var351 : Byte @noise, x : UInt8, var325 : Byte @noise, width : UInt8)
+	message destroyvar329_bis(var329 : Byte @noise, var377 : Byte @noise)
+	message displayReadyvar331(var367 : Byte @noise, var331 : Byte @noise)
+	message drawRectvar324xwidthheight_bis(width : UInt8, var324 : Byte @noise, x : UInt8, height : UInt8, var389 : Byte @noise)
+	message displayReady__bis(var390 : Byte @noise)
+	message displayError_(var358 : Byte @noise)
+	message drawThingMLvar327x_bis(var378 : Byte @noise, x : UInt8, var327 : Byte @noise)
+	message updatevar330(var330 : Byte @noise, var361 : Byte @noise)
+	message createysizevar328(var363 : Byte @noise, var328 : Byte @noise, ysize : UInt8)
+	message createxsize(xsize : UInt8, var362 : Byte @noise)
+	message setColorvar322gr(g : UInt8, r : UInt8, var322 : Byte @noise, var345 : Byte @noise)
+	message drawRecty_bis(y : UInt8, var388 : Byte @noise)
+	message displayError__bis(var382 : Byte @noise)
+	message drawRectvar324xwidthheight(width : UInt8, var324 : Byte @noise, var365 : Byte @noise, height : UInt8, x : UInt8)
+	message drawThingMLvar327x(var327 : Byte @noise, var354 : Byte @noise, x : UInt8)
+	message drawIntegerv_bis(v : Int16, var372 : Byte @noise)
+	message drawRecty(y : UInt8, var364 : Byte @noise)
+	message setBGColorvar323b(var323 : Byte @noise, b : UInt8, var357 : Byte @noise)
+	message clear__bis(var370 : Byte @noise)
+	message drawIntegerxdigitsvar326scaley_bis(x : UInt8, y : UInt8, scale : UInt8, digits : UInt8, var326 : Byte @noise, var373 : Byte @noise)
+	message displayReadyvar331_bis(var391 : Byte @noise, var331 : Byte @noise)
+	message setColorb(b : UInt8, var344 : Byte @noise)
+	message destroyvar329(var353 : Byte @noise, var329 : Byte @noise)
+	message clearvar321_bis(var371 : Byte @noise, var321 : Byte @noise)
+	message fillRectyheight(var350 : Byte @noise, y : UInt8, height : UInt8)
+	message createysizevar328_bis(var328 : Byte @noise, ysize : UInt8, var387 : Byte @noise)
+	message setColorvar322gr_bis(g : UInt8, r : UInt8, var369 : Byte @noise, var322 : Byte @noise)
+	message setBGColorgr_bis(var380 : Byte @noise, g : UInt8, r : UInt8)
+	message update_(var360 : Byte @noise)
+	message drawThingMLy_bis(y : UInt8, var379 : Byte @noise)
+	message drawIntegerv(var348 : Byte @noise, v : Int16)
+	message drawThingMLy(var355 : Byte @noise, y : UInt8)
+	message displayReady_(var366 : Byte @noise)
+	message destroy_(var352 : Byte @noise)
+	message updatevar330_bis(var385 : Byte @noise, var330 : Byte @noise)
+	message fillRectyheight_bis(height : UInt8, var374 : Byte @noise, y : UInt8)
+	message clearvar321(var347 : Byte @noise, var321 : Byte @noise)
+	message displayErrorvar332_bis(var383 : Byte @noise, var332 : Byte @noise)
+	message update__bis(var384 : Byte @noise)
+	message destroy__bis(var376 : Byte @noise)
+}
+thing fragment Display includes DisplayMsgs {
+	provided port display {
+		sends displayReady_ sends displayReadyvar331 sends displayError_ sends displayErrorvar332 sends displayReady__bis sends displayReadyvar331_bis sends displayError__bis sends displayErrorvar332_bis receives createxsize receives createysizevar328 receives destroy_ receives destroyvar329 receives update_ receives updatevar330 receives clear_ receives clearvar321 receives setColorb receives setColorvar322gr receives setBGColorgr receives setBGColorvar323b receives drawRecty receives drawRectvar324xwidthheight receives fillRectyheight receives fillRectxwidthvar325 receives drawIntegerv receives drawIntegerxdigitsvar326scaley receives drawThingMLvar327x receives drawThingMLy receives createxsize_bis receives createysizevar328_bis receives destroy__bis receives destroyvar329_bis receives update__bis receives updatevar330_bis receives clear__bis receives clearvar321_bis receives setColorb_bis receives setColorvar322gr_bis receives setBGColorgr_bis receives setBGColorvar323b_bis receives drawRecty_bis receives drawRectvar324xwidthheight_bis receives fillRectyheight_bis receives fillRectxwidthvar325_bis receives drawIntegerv_bis receives drawIntegerxdigitsvar326scaley_bis receives drawThingMLvar327x_bis receives drawThingMLy_bis
+	}
+	property bg_r : UInt8 = 0
+	property bg_g : UInt8 = 0
+	property bg_b : UInt8 = 0
+	property fg_r : UInt8 = 0
+	property fg_g : UInt8 = 0
+	property fg_b : UInt8 = 0
+	abstract function initDisplay(xsize : UInt8, ysize : UInt8)
+
+	abstract function destroyDisplay()
+
+	abstract function updateDisplay()
+
+	abstract function clearScreen() @abstract `true`
+
+	abstract function setColor(r : UInt8, g : UInt8, b : UInt8)
+
+	abstract function drawRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8)
+
+	abstract function fillRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8)
+
+	function drawDigit(x : UInt8, y : UInt8, d : UInt8, size : UInt8) do
+		if (d < 1) do
+			fillRect(x, y, size, 5 * size)
+			fillRect(x, y, 3 * size, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+		end
+		else if (d < 2) do
+			fillRect(x + size, y, size, 5 * size)
+		end
+		else if (d < 3) do
+			fillRect(x, y, size * 3, size)
+			fillRect(x + 2 * size, y, size, 3 * size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+			fillRect(x, y + 2 * size, size, 3 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+		end
+		else if (d < 4) do
+			fillRect(x, y, size * 3, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+			fillRect(x + size, y + 2 * size, 2 * size, size)
+		end
+		else if (d < 5) do
+			fillRect(x, y, size, 3 * size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+		end
+		else if (d < 6) do
+			fillRect(x, y, size * 3, size)
+			fillRect(x, y, size, 3 * size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+			fillRect(x + 2 * size, y + 2 * size, size, 3 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+		end
+		else if (d < 7) do
+			fillRect(x, y, size * 3, size)
+			fillRect(x, y, size, 5 * size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+			fillRect(x + 2 * size, y + 2 * size, size, 3 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+		end
+		else if (d < 8) do
+			fillRect(x, y, 3 * size, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+		end
+		else if (d < 9) do
+			fillRect(x, y, size, 5 * size)
+			fillRect(x, y, 3 * size, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+		end
+		else do
+			fillRect(x, y, size, 3 * size)
+			fillRect(x, y, 3 * size, size)
+			fillRect(x + 2 * size, y, size, 5 * size)
+			fillRect(x, y + 4 * size, 3 * size, size)
+			fillRect(x, y + 2 * size, 3 * size, size)
+		end
+	end
+	function drawThingML(px : Int16, py : Int16) do
+		setColor(255, 255, 255)
+		fillRect(px, py, 108, 13)
+		var x : Int16 = px + 1
+		var y : Int16 = py + 1
+		setColor(80, 80, 80)
+		fillRect(x + 0, y + 0, 12, 2)
+		fillRect(x + 5, y + 0, 2, 11)
+		fillRect(x + 18, y + 0, 2, 11)
+		fillRect(x + 27, y + 0, 2, 11)
+		fillRect(x + 18, y + 5, 11, 2)
+		fillRect(x + 36, y + 0, 2, 11)
+		fillRect(x + 44, y + 0, 2, 11)
+		fillRect(x + 46, y + 1, 1, 3)
+		fillRect(x + 47, y + 2, 1, 3)
+		fillRect(x + 48, y + 3, 1, 3)
+		fillRect(x + 49, y + 4, 1, 3)
+		fillRect(x + 50, y + 5, 1, 3)
+		fillRect(x + 51, y + 6, 1, 3)
+		fillRect(x + 52, y + 7, 1, 3)
+		fillRect(x + 53, y + 0, 2, 11)
+		fillRect(x + 62, y + 0, 2, 11)
+		fillRect(x + 62, y + 0, 12, 2)
+		fillRect(x + 62, y + 9, 12, 2)
+		fillRect(x + 62, y + 9, 12, 2)
+		fillRect(x + 69, y + 5, 5, 2)
+		fillRect(x + 72, y + 7, 2, 2)
+		setColor(232, 141, 10)
+		fillRect(x + 80, y + 0, 11, 2)
+		fillRect(x + 80, y + 0, 2, 11)
+		fillRect(x + 85, y + 0, 2, 11)
+		fillRect(x + 89, y + 0, 2, 11)
+		fillRect(x + 95, y + 0, 2, 11)
+		fillRect(x + 95, y + 9, 11, 2)
+	end
+	function drawInteger(x : UInt8, y : UInt8, v : Int16, digits : UInt8, scale : UInt8) do
+		clearInteger(x, y, digits, scale)
+		var val : Int16 = v
+		var d : UInt8 = digits
+		while (d > 0) do
+			drawDigit(x + (d - 1) * 4 * scale, y, val % 10, scale)
+			val = val / 10
+			d = d - 1
+		end
+	end
+	function clearInteger(x : UInt8, y : UInt8, digits : UInt8, scale : UInt8) do
+		setColor(bg_r, bg_g, bg_b)
+		fillRect(x, y, (digits * 4 - 1) * scale, 5 * scale)
+		setColor(fg_r, fg_g, fg_b)
+	end
+	statechart SC init Wait {
+		state Wait {
+			property display_create_xsize : UInt8
+			property display_create_ysize : UInt8
+			property display_create_var328 : Byte
+			property received_display_createxsize : Boolean
+			property received_display_createysizevar328 : Boolean
+			internal
+			event e : display?createxsize
+			guard not received_display_createysizevar328
+			action do
+				received_display_createxsize = true
+				display_create_xsize = e.xsize
+			end
+			internal
+			event e : display?createysizevar328
+			guard not received_display_createxsize
+			action do
+				received_display_createysizevar328 = true
+				display_create_ysize = e.ysize
+				display_create_var328 = e.var328
+			end
+			internal
+			event e : display?createxsize_bis
+			guard not received_display_createysizevar328
+			action do
+				received_display_createxsize = true
+				display_create_xsize = e.xsize
+			end
+			internal
+			event e : display?createysizevar328_bis
+			guard not received_display_createxsize
+			action do
+				received_display_createysizevar328 = true
+				display_create_ysize = e.ysize
+				display_create_var328 = e.var328
+			end
+			transition -> Running
+			event e : display?createxsize
+			guard received_display_createysizevar328
+			action do
+				display_create_xsize = e.xsize
+				initDisplay(e.xsize, display_create_ysize)
+				received_display_createxsize = false
+				received_display_createysizevar328 = false
+			end
+			transition -> Running
+			event e : display?createysizevar328
+			guard received_display_createxsize
+			action do
+				display_create_ysize = e.ysize
+				display_create_var328 = e.var328
+				initDisplay(display_create_xsize, e.ysize)
+				received_display_createysizevar328 = false
+				received_display_createxsize = false
+			end
+			transition -> Running
+			event e : display?createxsize_bis
+			guard received_display_createysizevar328
+			action do
+				display_create_xsize = e.xsize
+				initDisplay(e.xsize, display_create_ysize)
+				received_display_createxsize = false
+				received_display_createysizevar328 = false
+			end
+			transition -> Running
+			event e : display?createysizevar328_bis
+			guard received_display_createxsize
+			action do
+				display_create_ysize = e.ysize
+				display_create_var328 = e.var328
+				initDisplay(display_create_xsize, e.ysize)
+				received_display_createysizevar328 = false
+				received_display_createxsize = false
+			end
+		}
+		state Running {
+			property display_setColor_b : UInt8
+			property display_setColor_var322 : Byte
+			property display_setColor_g : UInt8
+			property display_setColor_r : UInt8
+			property received_display_setColorb : Boolean
+			property received_display_setColorvar322gr : Boolean
+			property display_setBGColor_g : UInt8
+			property display_setBGColor_r : UInt8
+			property display_setBGColor_var323 : Byte
+			property display_setBGColor_b : UInt8
+			property received_display_setBGColorgr : Boolean
+			property received_display_setBGColorvar323b : Boolean
+			property display_clear_var321 : Byte
+			property received_display_clear_ : Boolean
+			property received_display_clearvar321 : Boolean
+			property display_drawRect_y : UInt8
+			property display_drawRect_var324 : Byte
+			property display_drawRect_x : UInt8
+			property display_drawRect_width : UInt8
+			property display_drawRect_height : UInt8
+			property received_display_drawRecty : Boolean
+			property received_display_drawRectvar324xwidthheight : Boolean
+			property display_fillRect_y : UInt8
+			property display_fillRect_height : UInt8
+			property display_fillRect_x : UInt8
+			property display_fillRect_width : UInt8
+			property display_fillRect_var325 : Byte
+			property received_display_fillRectyheight : Boolean
+			property received_display_fillRectxwidthvar325 : Boolean
+			property display_update_var330 : Byte
+			property received_display_update_ : Boolean
+			property received_display_updatevar330 : Boolean
+			property display_drawInteger_v : Int16
+			property display_drawInteger_x : UInt8
+			property display_drawInteger_digits : UInt8
+			property display_drawInteger_var326 : Byte
+			property display_drawInteger_scale : UInt8
+			property display_drawInteger_y : UInt8
+			property received_display_drawIntegerv : Boolean
+			property received_display_drawIntegerxdigitsvar326scaley : Boolean
+			property display_drawThingML_var327 : Byte
+			property display_drawThingML_x : UInt8
+			property display_drawThingML_y : UInt8
+			property received_display_drawThingMLvar327x : Boolean
+			property received_display_drawThingMLy : Boolean
+			property display_destroy_var329 : Byte
+			property received_display_destroy_ : Boolean
+			property received_display_destroyvar329 : Boolean
+			on entry do
+				do
+					if (0 < 92) do
+						display!displayReady_(0x33)
+					end
+					else do
+						display!displayReady__bis(0x3E)
+					end
+					if (88 < 14) do
+						display!displayReadyvar331(0xFE, 0xD5)
+					end
+					else do
+						display!displayReadyvar331_bis(0x83, 0xD5)
+					end
+				end
+			end
+			internal
+			event e : display?setColorb
+			action do
+				received_display_setColorb = true
+				display_setColor_b = e.b
+				if (received_display_setColorvar322gr) do
+					do
+						fg_r = display_setColor_r
+						fg_g = display_setColor_g
+						fg_b = display_setColor_b
+						setColor(display_setColor_r, display_setColor_g, display_setColor_b)
+					end
+					do
+						received_display_setColorb = false
+						received_display_setColorvar322gr = false
+					end
+				end
+			end
+			internal
+			event e : display?setColorvar322gr
+			action do
+				received_display_setColorvar322gr = true
+				display_setColor_var322 = e.var322
+				display_setColor_g = e.g
+				display_setColor_r = e.r
+				if (received_display_setColorb) do
+					do
+						fg_r = display_setColor_r
+						fg_g = display_setColor_g
+						fg_b = display_setColor_b
+						setColor(display_setColor_r, display_setColor_g, display_setColor_b)
+					end
+					do
+						received_display_setColorvar322gr = false
+						received_display_setColorb = false
+					end
+				end
+			end
+			internal
+			event e : display?setBGColorgr
+			action do
+				received_display_setBGColorgr = true
+				display_setBGColor_g = e.g
+				display_setBGColor_r = e.r
+				if (received_display_setBGColorvar323b) do
+					do
+						bg_r = display_setBGColor_r
+						bg_g = display_setBGColor_g
+						bg_b = display_setBGColor_b
+					end
+					do
+						received_display_setBGColorgr = false
+						received_display_setBGColorvar323b = false
+					end
+				end
+			end
+			internal
+			event e : display?setBGColorvar323b
+			action do
+				received_display_setBGColorvar323b = true
+				display_setBGColor_var323 = e.var323
+				display_setBGColor_b = e.b
+				if (received_display_setBGColorgr) do
+					do
+						bg_r = display_setBGColor_r
+						bg_g = display_setBGColor_g
+						bg_b = display_setBGColor_b
+					end
+					do
+						received_display_setBGColorvar323b = false
+						received_display_setBGColorgr = false
+					end
+				end
+			end
+			internal
+			event e : display?clear_
+			action do
+				received_display_clear_ = true
+				if (received_display_clearvar321) do
+					clearScreen()
+					do
+						received_display_clear_ = false
+						received_display_clearvar321 = false
+					end
+				end
+			end
+			internal
+			event e : display?clearvar321
+			action do
+				received_display_clearvar321 = true
+				display_clear_var321 = e.var321
+				if (received_display_clear_) do
+					clearScreen()
+					do
+						received_display_clearvar321 = false
+						received_display_clear_ = false
+					end
+				end
+			end
+			internal
+			event e : display?drawRecty
+			action do
+				received_display_drawRecty = true
+				display_drawRect_y = e.y
+				if (received_display_drawRectvar324xwidthheight) do
+					drawRect(display_drawRect_x, display_drawRect_y, display_drawRect_width, display_drawRect_height)
+					do
+						received_display_drawRecty = false
+						received_display_drawRectvar324xwidthheight = false
+					end
+				end
+			end
+			internal
+			event e : display?drawRectvar324xwidthheight
+			action do
+				received_display_drawRectvar324xwidthheight = true
+				display_drawRect_var324 = e.var324
+				display_drawRect_x = e.x
+				display_drawRect_width = e.width
+				display_drawRect_height = e.height
+				if (received_display_drawRecty) do
+					drawRect(display_drawRect_x, display_drawRect_y, display_drawRect_width, display_drawRect_height)
+					do
+						received_display_drawRectvar324xwidthheight = false
+						received_display_drawRecty = false
+					end
+				end
+			end
+			internal
+			event e : display?fillRectyheight
+			action do
+				received_display_fillRectyheight = true
+				display_fillRect_y = e.y
+				display_fillRect_height = e.height
+				if (received_display_fillRectxwidthvar325) do
+					fillRect(display_fillRect_x, display_fillRect_y, display_fillRect_width, display_fillRect_height)
+					do
+						received_display_fillRectyheight = false
+						received_display_fillRectxwidthvar325 = false
+					end
+				end
+			end
+			internal
+			event e : display?fillRectxwidthvar325
+			action do
+				received_display_fillRectxwidthvar325 = true
+				display_fillRect_x = e.x
+				display_fillRect_width = e.width
+				display_fillRect_var325 = e.var325
+				if (received_display_fillRectyheight) do
+					fillRect(display_fillRect_x, display_fillRect_y, display_fillRect_width, display_fillRect_height)
+					do
+						received_display_fillRectxwidthvar325 = false
+						received_display_fillRectyheight = false
+					end
+				end
+			end
+			internal
+			event e : display?update_
+			action do
+				received_display_update_ = true
+				if (received_display_updatevar330) do
+					updateDisplay()
+					do
+						received_display_update_ = false
+						received_display_updatevar330 = false
+					end
+				end
+			end
+			internal
+			event e : display?updatevar330
+			action do
+				received_display_updatevar330 = true
+				display_update_var330 = e.var330
+				if (received_display_update_) do
+					updateDisplay()
+					do
+						received_display_updatevar330 = false
+						received_display_update_ = false
+					end
+				end
+			end
+			internal
+			event e : display?drawIntegerv
+			action do
+				received_display_drawIntegerv = true
+				display_drawInteger_v = e.v
+				if (received_display_drawIntegerxdigitsvar326scaley) do
+					drawInteger(display_drawInteger_x, display_drawInteger_y, display_drawInteger_v, display_drawInteger_digits, display_drawInteger_scale)
+					do
+						received_display_drawIntegerv = false
+						received_display_drawIntegerxdigitsvar326scaley = false
+					end
+				end
+			end
+			internal
+			event e : display?drawIntegerxdigitsvar326scaley
+			action do
+				received_display_drawIntegerxdigitsvar326scaley = true
+				display_drawInteger_x = e.x
+				display_drawInteger_digits = e.digits
+				display_drawInteger_var326 = e.var326
+				display_drawInteger_scale = e.scale
+				display_drawInteger_y = e.y
+				if (received_display_drawIntegerv) do
+					drawInteger(display_drawInteger_x, display_drawInteger_y, display_drawInteger_v, display_drawInteger_digits, display_drawInteger_scale)
+					do
+						received_display_drawIntegerxdigitsvar326scaley = false
+						received_display_drawIntegerv = false
+					end
+				end
+			end
+			internal
+			event e : display?drawThingMLvar327x
+			action do
+				received_display_drawThingMLvar327x = true
+				display_drawThingML_var327 = e.var327
+				display_drawThingML_x = e.x
+				if (received_display_drawThingMLy) do
+					drawThingML(display_drawThingML_x, display_drawThingML_y)
+					do
+						received_display_drawThingMLvar327x = false
+						received_display_drawThingMLy = false
+					end
+				end
+			end
+			internal
+			event e : display?drawThingMLy
+			action do
+				received_display_drawThingMLy = true
+				display_drawThingML_y = e.y
+				if (received_display_drawThingMLvar327x) do
+					drawThingML(display_drawThingML_x, display_drawThingML_y)
+					do
+						received_display_drawThingMLy = false
+						received_display_drawThingMLvar327x = false
+					end
+				end
+			end
+			internal
+			event display?destroy_
+			guard not received_display_destroyvar329
+			action do
+				received_display_destroy_ = true
+			end
+			internal
+			event display?destroyvar329
+			guard not received_display_destroy_
+			action do
+				received_display_destroyvar329 = true
+			end
+			internal
+			event e : display?setColorb_bis
+			action do
+				received_display_setColorb = true
+				display_setColor_b = e.b
+				if (received_display_setColorvar322gr) do
+					do
+						fg_r = display_setColor_r
+						fg_g = display_setColor_g
+						fg_b = display_setColor_b
+						setColor(display_setColor_r, display_setColor_g, display_setColor_b)
+					end
+					do
+						received_display_setColorb = false
+						received_display_setColorvar322gr = false
+					end
+				end
+			end
+			internal
+			event e : display?setColorvar322gr_bis
+			action do
+				received_display_setColorvar322gr = true
+				display_setColor_var322 = e.var322
+				display_setColor_g = e.g
+				display_setColor_r = e.r
+				if (received_display_setColorb) do
+					do
+						fg_r = display_setColor_r
+						fg_g = display_setColor_g
+						fg_b = display_setColor_b
+						setColor(display_setColor_r, display_setColor_g, display_setColor_b)
+					end
+					do
+						received_display_setColorvar322gr = false
+						received_display_setColorb = false
+					end
+				end
+			end
+			internal
+			event e : display?setBGColorgr_bis
+			action do
+				received_display_setBGColorgr = true
+				display_setBGColor_g = e.g
+				display_setBGColor_r = e.r
+				if (received_display_setBGColorvar323b) do
+					do
+						bg_r = display_setBGColor_r
+						bg_g = display_setBGColor_g
+						bg_b = display_setBGColor_b
+					end
+					do
+						received_display_setBGColorgr = false
+						received_display_setBGColorvar323b = false
+					end
+				end
+			end
+			internal
+			event e : display?setBGColorvar323b_bis
+			action do
+				received_display_setBGColorvar323b = true
+				display_setBGColor_var323 = e.var323
+				display_setBGColor_b = e.b
+				if (received_display_setBGColorgr) do
+					do
+						bg_r = display_setBGColor_r
+						bg_g = display_setBGColor_g
+						bg_b = display_setBGColor_b
+					end
+					do
+						received_display_setBGColorvar323b = false
+						received_display_setBGColorgr = false
+					end
+				end
+			end
+			internal
+			event e : display?clear__bis
+			action do
+				received_display_clear_ = true
+				if (received_display_clearvar321) do
+					clearScreen()
+					do
+						received_display_clear_ = false
+						received_display_clearvar321 = false
+					end
+				end
+			end
+			internal
+			event e : display?clearvar321_bis
+			action do
+				received_display_clearvar321 = true
+				display_clear_var321 = e.var321
+				if (received_display_clear_) do
+					clearScreen()
+					do
+						received_display_clearvar321 = false
+						received_display_clear_ = false
+					end
+				end
+			end
+			internal
+			event e : display?drawRecty_bis
+			action do
+				received_display_drawRecty = true
+				display_drawRect_y = e.y
+				if (received_display_drawRectvar324xwidthheight) do
+					drawRect(display_drawRect_x, display_drawRect_y, display_drawRect_width, display_drawRect_height)
+					do
+						received_display_drawRecty = false
+						received_display_drawRectvar324xwidthheight = false
+					end
+				end
+			end
+			internal
+			event e : display?drawRectvar324xwidthheight_bis
+			action do
+				received_display_drawRectvar324xwidthheight = true
+				display_drawRect_var324 = e.var324
+				display_drawRect_x = e.x
+				display_drawRect_width = e.width
+				display_drawRect_height = e.height
+				if (received_display_drawRecty) do
+					drawRect(display_drawRect_x, display_drawRect_y, display_drawRect_width, display_drawRect_height)
+					do
+						received_display_drawRectvar324xwidthheight = false
+						received_display_drawRecty = false
+					end
+				end
+			end
+			internal
+			event e : display?fillRectyheight_bis
+			action do
+				received_display_fillRectyheight = true
+				display_fillRect_y = e.y
+				display_fillRect_height = e.height
+				if (received_display_fillRectxwidthvar325) do
+					fillRect(display_fillRect_x, display_fillRect_y, display_fillRect_width, display_fillRect_height)
+					do
+						received_display_fillRectyheight = false
+						received_display_fillRectxwidthvar325 = false
+					end
+				end
+			end
+			internal
+			event e : display?fillRectxwidthvar325_bis
+			action do
+				received_display_fillRectxwidthvar325 = true
+				display_fillRect_x = e.x
+				display_fillRect_width = e.width
+				display_fillRect_var325 = e.var325
+				if (received_display_fillRectyheight) do
+					fillRect(display_fillRect_x, display_fillRect_y, display_fillRect_width, display_fillRect_height)
+					do
+						received_display_fillRectxwidthvar325 = false
+						received_display_fillRectyheight = false
+					end
+				end
+			end
+			internal
+			event e : display?update__bis
+			action do
+				received_display_update_ = true
+				if (received_display_updatevar330) do
+					updateDisplay()
+					do
+						received_display_update_ = false
+						received_display_updatevar330 = false
+					end
+				end
+			end
+			internal
+			event e : display?updatevar330_bis
+			action do
+				received_display_updatevar330 = true
+				display_update_var330 = e.var330
+				if (received_display_update_) do
+					updateDisplay()
+					do
+						received_display_updatevar330 = false
+						received_display_update_ = false
+					end
+				end
+			end
+			internal
+			event e : display?drawIntegerv_bis
+			action do
+				received_display_drawIntegerv = true
+				display_drawInteger_v = e.v
+				if (received_display_drawIntegerxdigitsvar326scaley) do
+					drawInteger(display_drawInteger_x, display_drawInteger_y, display_drawInteger_v, display_drawInteger_digits, display_drawInteger_scale)
+					do
+						received_display_drawIntegerv = false
+						received_display_drawIntegerxdigitsvar326scaley = false
+					end
+				end
+			end
+			internal
+			event e : display?drawIntegerxdigitsvar326scaley_bis
+			action do
+				received_display_drawIntegerxdigitsvar326scaley = true
+				display_drawInteger_x = e.x
+				display_drawInteger_digits = e.digits
+				display_drawInteger_var326 = e.var326
+				display_drawInteger_scale = e.scale
+				display_drawInteger_y = e.y
+				if (received_display_drawIntegerv) do
+					drawInteger(display_drawInteger_x, display_drawInteger_y, display_drawInteger_v, display_drawInteger_digits, display_drawInteger_scale)
+					do
+						received_display_drawIntegerxdigitsvar326scaley = false
+						received_display_drawIntegerv = false
+					end
+				end
+			end
+			internal
+			event e : display?drawThingMLvar327x_bis
+			action do
+				received_display_drawThingMLvar327x = true
+				display_drawThingML_var327 = e.var327
+				display_drawThingML_x = e.x
+				if (received_display_drawThingMLy) do
+					drawThingML(display_drawThingML_x, display_drawThingML_y)
+					do
+						received_display_drawThingMLvar327x = false
+						received_display_drawThingMLy = false
+					end
+				end
+			end
+			internal
+			event e : display?drawThingMLy_bis
+			action do
+				received_display_drawThingMLy = true
+				display_drawThingML_y = e.y
+				if (received_display_drawThingMLvar327x) do
+					drawThingML(display_drawThingML_x, display_drawThingML_y)
+					do
+						received_display_drawThingMLy = false
+						received_display_drawThingMLvar327x = false
+					end
+				end
+			end
+			internal
+			event display?destroy__bis
+			guard not received_display_destroyvar329
+			action do
+				received_display_destroy_ = true
+			end
+			internal
+			event display?destroyvar329_bis
+			guard not received_display_destroy_
+			action do
+				received_display_destroyvar329 = true
+			end
+			transition -> Destroyed
+			event display?destroy_
+			guard received_display_destroyvar329
+			action do
+				destroyDisplay()
+				received_display_destroy_ = false
+				received_display_destroyvar329 = false
+			end
+			transition -> Destroyed
+			event display?destroyvar329
+			guard received_display_destroy_
+			action do
+				destroyDisplay()
+				received_display_destroyvar329 = false
+				received_display_destroy_ = false
+			end
+			transition -> Destroyed
+			event display?destroy__bis
+			guard received_display_destroyvar329
+			action do
+				destroyDisplay()
+				received_display_destroy_ = false
+				received_display_destroyvar329 = false
+			end
+			transition -> Destroyed
+			event display?destroyvar329_bis
+			guard received_display_destroy_
+			action do
+				destroyDisplay()
+				received_display_destroyvar329 = false
+				received_display_destroy_ = false
+			end
+		}
+		final state Destroyed {
+		}
+	}
+}
+thing fragment ControllerMsgs {
+	message velocityvar333dy(var333 : Byte @noise, dy : Int16, var393 : Byte @noise)
+	message velocitydx_bis(var396 : Byte @noise, dx : Int16)
+	message positiony(y : Int16, var394 : Byte @noise)
+	message velocitydx(var392 : Byte @noise, dx : Int16)
+	message velocityvar333dy_bis(var333 : Byte @noise, var397 : Byte @noise, dy : Int16)
+	message positiony_bis(var398 : Byte @noise, y : Int16)
+	message positionvar334x_bis(var399 : Byte @noise, var334 : Byte @noise, x : Int16)
+	message positionvar334x(var334 : Byte @noise, var395 : Byte @noise, x : Int16)
+}
+thing fragment Controller includes ControllerMsgs {
+	provided port controls {
+		sends positiony sends positionvar334x sends positiony_bis sends positionvar334x_bis
+	}
+}
+thing fragment TimerController includes Controller , TimerMsgs {
+	required port clock {
+		sends timer_start sends timer_cancel receives timer_timeout
+	}
+	readonly property XMAX : Int16 = 100
+	readonly property YMAX : Int16 = 100
+	readonly property XMIN : Int16 = -100
+	readonly property YMIN : Int16 = -100
+	property posX : Int16 = 0
+	property posY : Int16 = 0
+	property dx : Int16 = 0
+	property dy : Int16 = 0
+}
+thing VelocityController includes TimerController {
+	required port ctrl_in {
+		receives velocitydx receives velocityvar333dy receives positiony receives positionvar334x receives velocitydx_bis receives velocityvar333dy_bis receives positiony_bis receives positionvar334x_bis
+	}
+	readonly property timerID : UInt8 = 4
+	statechart SC init Running {
+		property ctrl_in_velocity_dx : Int16
+		property ctrl_in_velocity_var333 : Byte
+		property ctrl_in_velocity_dy : Int16
+		property received_ctrl_in_velocitydx : Boolean
+		property received_ctrl_in_velocityvar333dy : Boolean
+		state Running {
+			property ctrl_in_position_y : Int16
+			property ctrl_in_position_var334 : Byte
+			property ctrl_in_position_x : Int16
+			property received_ctrl_in_positiony : Boolean
+			property received_ctrl_in_positionvar334x : Boolean
+			on entry clock!timer_start(0xFF, 0xA7, timerID, 50)
+			internal
+			event e : ctrl_in?positiony
+			action do
+				received_ctrl_in_positiony = true
+				ctrl_in_position_y = e.y
+				if (received_ctrl_in_positionvar334x) do
+					do
+						posX = ctrl_in_position_x
+						posY = ctrl_in_position_y
+						if (posX < XMIN) posX = XMIN
+						else if (posX > XMAX) posX = XMAX
+						if (posY < YMIN) posY = YMIN
+						else if (posY > YMAX) posY = YMAX
+						do
+							if (214 < 177) do
+								controls!positionvar334x(0x7B, 0x4A, posX)
+							end
+							else do
+								controls!positionvar334x_bis(0x32, 0x7B, posX)
+							end
+							if (54 < 57) do
+								controls!positiony(posY, 0x34)
+							end
+							else do
+								controls!positiony_bis(0x4B, posY)
+							end
+						end
+					end
+					do
+						received_ctrl_in_positiony = false
+						received_ctrl_in_positionvar334x = false
+					end
+				end
+			end
+			internal
+			event e : ctrl_in?positionvar334x
+			action do
+				received_ctrl_in_positionvar334x = true
+				ctrl_in_position_var334 = e.var334
+				ctrl_in_position_x = e.x
+				if (received_ctrl_in_positiony) do
+					do
+						posX = ctrl_in_position_x
+						posY = ctrl_in_position_y
+						if (posX < XMIN) posX = XMIN
+						else if (posX > XMAX) posX = XMAX
+						if (posY < YMIN) posY = YMIN
+						else if (posY > YMAX) posY = YMAX
+						do
+							if (130 < 140) do
+								controls!positiony(posY, 0x7A)
+							end
+							else do
+								controls!positiony_bis(0xC1, posY)
+							end
+							if (175 < 254) do
+								controls!positionvar334x(0x7B, 0xE5, posX)
+							end
+							else do
+								controls!positionvar334x_bis(0x0D, 0x7B, posX)
+							end
+						end
+					end
+					do
+						received_ctrl_in_positionvar334x = false
+						received_ctrl_in_positiony = false
+					end
+				end
+			end
+			internal
+			event e : ctrl_in?positiony_bis
+			action do
+				received_ctrl_in_positiony = true
+				ctrl_in_position_y = e.y
+				if (received_ctrl_in_positionvar334x) do
+					do
+						posX = ctrl_in_position_x
+						posY = ctrl_in_position_y
+						if (posX < XMIN) posX = XMIN
+						else if (posX > XMAX) posX = XMAX
+						if (posY < YMIN) posY = YMIN
+						else if (posY > YMAX) posY = YMAX
+						do
+							if (214 < 177) do
+								controls!positionvar334x(0x7B, 0x82, posX)
+							end
+							else do
+								controls!positionvar334x_bis(0xE7, 0x7B, posX)
+							end
+							if (54 < 57) do
+								controls!positiony(posY, 0x38)
+							end
+							else do
+								controls!positiony_bis(0x23, posY)
+							end
+						end
+					end
+					do
+						received_ctrl_in_positiony = false
+						received_ctrl_in_positionvar334x = false
+					end
+				end
+			end
+			internal
+			event e : ctrl_in?positionvar334x_bis
+			action do
+				received_ctrl_in_positionvar334x = true
+				ctrl_in_position_var334 = e.var334
+				ctrl_in_position_x = e.x
+				if (received_ctrl_in_positiony) do
+					do
+						posX = ctrl_in_position_x
+						posY = ctrl_in_position_y
+						if (posX < XMIN) posX = XMIN
+						else if (posX > XMAX) posX = XMAX
+						if (posY < YMIN) posY = YMIN
+						else if (posY > YMAX) posY = YMAX
+						do
+							if (130 < 140) do
+								controls!positiony(posY, 0x12)
+							end
+							else do
+								controls!positiony_bis(0x76, posY)
+							end
+							if (175 < 254) do
+								controls!positionvar334x(0x7B, 0xAE, posX)
+							end
+							else do
+								controls!positionvar334x_bis(0x9E, 0x7B, posX)
+							end
+						end
+					end
+					do
+						received_ctrl_in_positionvar334x = false
+						received_ctrl_in_positiony = false
+					end
+				end
+			end
+			transition -> Running
+			event e : clock?timer_timeout
+			guard e.id == timerID
+			action do
+				posX = posX + dx
+				posY = posY + dy
+				if (posX < XMIN) posX = XMIN
+				else if (posX > XMAX) posX = XMAX
+				if (posY < YMIN) posY = YMIN
+				else if (posY > YMAX) posY = YMAX
+				do
+					if (209 < 239) do
+						controls!positionvar334x(0x92, 0xE5, posX)
+					end
+					else do
+						controls!positionvar334x_bis(0xD8, 0x92, posX)
+					end
+					if (194 < 211) do
+						controls!positiony(posY, 0xB2)
+					end
+					else do
+						controls!positiony_bis(0xC4, posY)
+					end
+				end
+			end
+		}
+		internal
+		event e : ctrl_in?velocitydx
+		action do
+			received_ctrl_in_velocitydx = true
+			ctrl_in_velocity_dx = e.dx
+			if (received_ctrl_in_velocityvar333dy) do
+				do
+					dx = ctrl_in_velocity_dx
+					dy = ctrl_in_velocity_dy
+				end
+				do
+					received_ctrl_in_velocitydx = false
+					received_ctrl_in_velocityvar333dy = false
+				end
+			end
+		end
+		internal
+		event e : ctrl_in?velocityvar333dy
+		action do
+			received_ctrl_in_velocityvar333dy = true
+			ctrl_in_velocity_var333 = e.var333
+			ctrl_in_velocity_dy = e.dy
+			if (received_ctrl_in_velocitydx) do
+				do
+					dx = ctrl_in_velocity_dx
+					dy = ctrl_in_velocity_dy
+				end
+				do
+					received_ctrl_in_velocityvar333dy = false
+					received_ctrl_in_velocitydx = false
+				end
+			end
+		end
+		internal
+		event e : ctrl_in?velocitydx_bis
+		action do
+			received_ctrl_in_velocitydx = true
+			ctrl_in_velocity_dx = e.dx
+			if (received_ctrl_in_velocityvar333dy) do
+				do
+					dx = ctrl_in_velocity_dx
+					dy = ctrl_in_velocity_dy
+				end
+				do
+					received_ctrl_in_velocitydx = false
+					received_ctrl_in_velocityvar333dy = false
+				end
+			end
+		end
+		internal
+		event e : ctrl_in?velocityvar333dy_bis
+		action do
+			received_ctrl_in_velocityvar333dy = true
+			ctrl_in_velocity_var333 = e.var333
+			ctrl_in_velocity_dy = e.dy
+			if (received_ctrl_in_velocitydx) do
+				do
+					dx = ctrl_in_velocity_dx
+					dy = ctrl_in_velocity_dy
+				end
+				do
+					received_ctrl_in_velocityvar333dy = false
+					received_ctrl_in_velocitydx = false
+				end
+			end
+		end
+	}
+}
+thing fragment IAControllerMsg {
+	message hitBallvar336(var405 : Byte @noise, var336 : Byte @noise)
+	message missBallvar337(var337 : Byte @noise, var401 : Byte @noise)
+	message hitBall__bis(var410 : Byte @noise)
+	message hitBallvar336_bis(var336 : Byte @noise, var411 : Byte @noise)
+	message missBall__bis(var406 : Byte @noise)
+	message missBall_(var400 : Byte @noise)
+	message updateIApadxballxvar335bally_bis(padx : Int16, bally : Int16, var335 : Byte @noise, ballx : Int16, var408 : Byte @noise)
+	message missBallvar337_bis(var337 : Byte @noise, var407 : Byte @noise)
+	message updateIApadxballxvar335bally(padx : Int16, bally : Int16, ballx : Int16, var402 : Byte @noise, var335 : Byte @noise)
+	message hitBall_(var404 : Byte @noise)
+	message updateIApady(var403 : Byte @noise, pady : Int16)
+	message updateIApady_bis(pady : Int16, var409 : Byte @noise)
+}
+thing fragment SoundMsgs {
+	message tonefreqvar338(var412 : Byte @noise, freq : UInt16, var338 : Byte @noise)
+	message tonetime(time : UInt16, var413 : Byte @noise)
+	message tonefreqvar338_bis(var414 : Byte @noise, var338 : Byte @noise, freq : UInt16)
+	message tonetime_bis(time : UInt16, var415 : Byte @noise)
+}
+thing fragment Sound includes SoundMsgs {
+	provided port sound {
+		receives tonefreqvar338 receives tonetime receives tonefreqvar338_bis receives tonetime_bis
+	}
+	abstract function tone(f : UInt16, t : UInt16) @abstract `true`
+
+	statechart behavior init INIT {
+		state INIT {
+			property sound_tone_freq : UInt16
+			property sound_tone_var338 : Byte
+			property sound_tone_time : UInt16
+			property received_sound_tonefreqvar338 : Boolean
+			property received_sound_tonetime : Boolean
+			internal
+			event t : sound?tonefreqvar338
+			action do
+				received_sound_tonefreqvar338 = true
+				sound_tone_freq = t.freq
+				sound_tone_var338 = t.var338
+				if (received_sound_tonetime) do
+					tone(sound_tone_freq, sound_tone_time)
+					do
+						received_sound_tonefreqvar338 = false
+						received_sound_tonetime = false
+					end
+				end
+			end
+			internal
+			event t : sound?tonetime
+			action do
+				received_sound_tonetime = true
+				sound_tone_time = t.time
+				if (received_sound_tonefreqvar338) do
+					tone(sound_tone_freq, sound_tone_time)
+					do
+						received_sound_tonetime = false
+						received_sound_tonefreqvar338 = false
+					end
+				end
+			end
+			internal
+			event t : sound?tonefreqvar338_bis
+			action do
+				received_sound_tonefreqvar338 = true
+				sound_tone_freq = t.freq
+				sound_tone_var338 = t.var338
+				if (received_sound_tonetime) do
+					tone(sound_tone_freq, sound_tone_time)
+					do
+						received_sound_tonefreqvar338 = false
+						received_sound_tonetime = false
+					end
+				end
+			end
+			internal
+			event t : sound?tonetime_bis
+			action do
+				received_sound_tonetime = true
+				sound_tone_time = t.time
+				if (received_sound_tonefreqvar338) do
+					tone(sound_tone_freq, sound_tone_time)
+					do
+						received_sound_tonetime = false
+						received_sound_tonefreqvar338 = false
+					end
+				end
+			end
+		}
+	}
+}
+thing fragment DefaultBreakoutGame includes BreakoutGame {
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (`` & variable & ` & ~(1 << ` & bit & `)`) as UInt8
+}
+datatype Byte<1>
+	@type_checker `Integer`
+	@c_type `uint8_t`
+	@java_type `byte`
+	@js_type `byte`
+	@go_type `byte`
+datatype Char<1>
+	@type_checker `Integer`
+	@c_type `char`
+	@java_type `byte`
+	@js_type `byte`
+	@go_type `byte`
+datatype Boolean<1>
+	@type_checker `Boolean`
+	@c_type `bool`
+	@java_type `boolean`
+	@js_type `boolean`
+	@go_type `bool`
+datatype UInt8<1>
+	@type_checker `Integer`
+	@c_type `uint8_t`
+	@java_type `int`
+	@js_type `short`
+	@go_type `uint8`
+datatype Int8<1>
+	@type_checker `Integer`
+	@c_type `int8_t`
+	@java_type `int`
+	@js_type `short`
+	@go_type `int8`
+datatype UInt16<2>
+	@type_checker `Integer`
+	@c_type `uint16_t`
+	@java_type `int`
+	@js_type `int`
+	@go_type `uint16`
+datatype Int16<2>
+	@type_checker `Integer`
+	@c_type `int16_t`
+	@java_type `int`
+	@js_type `short`
+	@go_type `int16`
+datatype Int32<4>
+	@type_checker `Integer`
+	@c_type `int32_t`
+	@java_type `long`
+	@js_type `int`
+	@go_type `int32`
+datatype UInt32<4>
+	@type_checker `Integer`
+	@c_type `uint32_t`
+	@java_type `long`
+	@js_type `long`
+	@go_type `uint32`
+datatype Long<4>
+	@type_checker `Integer`
+	@c_type `uint32_t`
+	@java_type `long`
+	@js_type `long`
+	@go_type `uint32`
+datatype Int64<8>
+	@type_checker `Integer`
+	@c_type `int64_t`
+	@java_type `long`
+	@js_type `long`
+	@go_type `int64`
+datatype UInt64<8>
+	@type_checker `Integer`
+	@c_type `uint64_t`
+	@java_type `long`
+	@js_type `long`
+	@go_type `uint64`
+datatype Integer<2>
+	@type_checker `Integer`
+	@c_type `int16_t`
+	@java_type `int`
+	@js_type `short`
+	@go_type `int16`
+datatype Float<4>
+	@type_checker `Real`
+	@c_type `float`
+	@java_type `float`
+	@js_type `float`
+	@go_type `float32`
+datatype Double<8>
+	@type_checker `Real`
+	@c_type `double`
+	@java_type `double`
+	@js_type `double`
+	@go_type `float64`
+object String
+	@serializable
+	@c_type `char *`
+	@java_type `String`
+	@js_type `String`
+	@go_type `string`
+enumeration DigitalState as Byte
+	@java_type `byte`
+	@c_type `uint8_t`
+	@go_type `uint8`
+	{
+	LOW = 0x00
+	HIGH = 0x01
+}
+thing fragment BreakoutGame includes TimerMsgs , DisplayMsgs , SoundMsgs , ControllerMsgs , IAControllerMsg {
+	message nextLevelvar340_bis(var340 : Byte @noise, var421 : Byte @noise)
+	message lostBall_(var418 : Byte @noise)
+	message nextLevelvar340(var417 : Byte @noise, var340 : Byte @noise)
+	message lostBallvar339(var419 : Byte @noise, var339 : Byte @noise)
+	message lostBall__bis(var422 : Byte @noise)
+	message nextLevel__bis(var420 : Byte @noise)
+	message nextLevel_(var416 : Byte @noise)
+	message lostBallvar339_bis(var423 : Byte @noise, var339 : Byte @noise)
+	required port clock {
+		sends timer_start sends timer_cancel receives timer_timeout
+	}
+	optional required port sound @sync_send `true` {
+		sends tonefreqvar338 sends tonetime sends tonefreqvar338_bis sends tonetime_bis
+	}
+	optional required port display @sync_send `true` {
+		sends createxsize sends createysizevar328 sends fillRectyheight sends fillRectxwidthvar325 sends drawRecty sends drawRectvar324xwidthheight sends clear_ sends clearvar321 sends setColorb sends setColorvar322gr sends setBGColorgr sends setBGColorvar323b sends drawIntegerv sends drawIntegerxdigitsvar326scaley sends update_ sends updatevar330 sends drawThingMLvar327x sends drawThingMLy sends createxsize_bis sends createysizevar328_bis sends fillRectyheight_bis sends fillRectxwidthvar325_bis sends drawRecty_bis sends drawRectvar324xwidthheight_bis sends clear__bis sends clearvar321_bis sends setColorb_bis sends setColorvar322gr_bis sends setBGColorgr_bis sends setBGColorvar323b_bis sends drawIntegerv_bis sends drawIntegerxdigitsvar326scaley_bis sends update__bis sends updatevar330_bis sends drawThingMLvar327x_bis sends drawThingMLy_bis receives displayReady_ receives displayReadyvar331 receives displayError_ receives displayErrorvar332 receives displayReady__bis receives displayReadyvar331_bis receives displayError__bis receives displayErrorvar332_bis
+	}
+	required port controller {
+		receives positiony receives positionvar334x receives positiony_bis receives positionvar334x_bis
+	}
+	provided port ia {
+		sends updateIApadxballxvar335bally sends updateIApady sends lostBall_ sends lostBallvar339 sends hitBall_ sends hitBallvar336 sends updateIApadxballxvar335bally_bis sends updateIApady_bis sends lostBall__bis sends lostBallvar339_bis sends hitBall__bis sends hitBallvar336_bis
+	}
+	internal port game {
+		sends lostBall_ sends lostBallvar339 sends nextLevel_ sends nextLevelvar340 sends lostBall__bis sends lostBallvar339_bis sends nextLevel__bis sends nextLevelvar340_bis receives lostBall_ receives lostBallvar339 receives nextLevel_ receives nextLevelvar340 receives lostBall__bis receives lostBallvar339_bis receives nextLevel__bis receives nextLevelvar340_bis
+	}
+	optional required port req_game {
+		sends lostBall_ sends lostBallvar339 sends nextLevel_ sends nextLevelvar340 sends lostBall__bis sends lostBallvar339_bis sends nextLevel__bis sends nextLevelvar340_bis
+	}
+	provided port pro_game {
+		receives lostBall_ receives lostBallvar339 receives nextLevel_ receives nextLevelvar340 receives lostBall__bis receives lostBallvar339_bis receives nextLevel__bis receives nextLevelvar340_bis
+	}
+	property lastTimestamp : UInt32 = 0
+	property counter : UInt8 = 0
+	readonly property XDISPSIZE : UInt8 = 160
+	readonly property YDISPSIZE : UInt8 = 128
+	readonly property SCALE : Int16 = 64
+	readonly property XMAX : Int16 = XDISPSIZE as Int16 * SCALE
+	readonly property YMAX : Int16 = YDISPSIZE as Int16 * SCALE
+	property TOP : Int16 = 14 * SCALE
+	property BOTTOM : Int16 = YMAX + 8 * SCALE
+	property LEFT : Int16 = 1 * SCALE
+	property RIGHT : Int16 = XMAX - 1 * SCALE
+	property br : Int16 = 3 * SCALE
+	property bx : Int16 = XMAX / 2
+	property by : Int16 = YMAX
+	property dx : Int16 = XMAX / 98
+	property dy : Int16 = -XMAX / 65
+	property padx : Int16 = YMAX / 2
+	property pady : Int16 = YMAX - 6 * SCALE
+	property padlen : Int16 = 25 * SCALE
+	property prevBX : Int16 = -1
+	property prevBY : Int16 = -1
+	property bgcolor : UInt8 [ 3 ]
+	property fgcolor : UInt8 [ 3 ]
+	property period : UInt16 = 33
+	readonly property tone1 : UInt16 = 440
+	readonly property tone2 : UInt16 = 880
+	readonly property tone_duration : UInt16 = 50
+	property prevPX : Int16 = -1
+	property prevPY : Int16 = -1
+	readonly property BRICK_ROWS : UInt8 = 5
+	readonly property BRICK_HEIGHT : UInt8 = 9
+	property bricks : UInt8 [ BRICK_ROWS ]
+	property score : Int16 = 0
+	property lives : UInt8 = 3
+	property level : UInt8 = 1
+	abstract function quit()
+
+	abstract function timestamp() : UInt32
+
+	abstract function usedMemory() : UInt32
+
+	function log(logMem : Boolean) do
+		var ts : UInt32
+		if (lastTimestamp == 0) do
+			ts = 0
+			lastTimestamp = timestamp()
+		end
+		else do
+			var t : UInt32 = timestamp()
+			ts = t - lastTimestamp
+			lastTimestamp = t
+		end
+		println "ts:" , ts , ",lives:" , lives , ",score:" , score , ",level:" , level , ",bx:" , bx , ",by:" , by , ",padx:" , padx
+		if (counter == 0 or logMem) println "#usedMem:" , usedMemory()
+		counter ++
+		if (counter == 10) counter = 0
+	end
+	function initColors() do
+		bgcolor[0] = 53
+		bgcolor[1] = 40
+		bgcolor[2] = 120
+		fgcolor[0] = 107
+		fgcolor[1] = 94
+		fgcolor[2] = 174
+		do
+			if (183 < 219) do
+				display!setBGColorvar323b(0xE5, bgcolor [2], 0x6C)
+			end
+			else do
+				display!setBGColorvar323b_bis(0xE5, 0x25, bgcolor [2])
+			end
+			if (9 < 94) do
+				display!setBGColorgr(bgcolor [0], 0xCC, bgcolor [1])
+			end
+			else do
+				display!setBGColorgr_bis(0xD8, bgcolor [1], bgcolor [0])
+			end
+		end
+		do
+			if (111 < 69) do
+				display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x9C, 0xCC)
+			end
+			else do
+				display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x7A, 0x9C)
+			end
+			if (3 < 96) do
+				display!setColorb(fgcolor [2], 0xC1)
+			end
+			else do
+				display!setColorb_bis(fgcolor [2], 0xB7)
+			end
+		end
+	end
+	function resetBall() do
+		bx = padx - br / SCALE
+		by = pady - br / SCALE
+		dx = (padx + prevBX + prevBY) % 300 - 150
+		if (dy > 0) dy = -dy
+		prevBX = -1
+		prevBY = -1
+	end
+	function eraseBall() do
+		var bs : Int16 = (br * 2) / SCALE
+		if (prevBX > 0) do
+			do
+				if (50 < 232) do
+					display!setColorvar322gr(bgcolor [1], bgcolor [0], 0xCD, 0x01)
+				end
+				else do
+					display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0xD2, 0xCD)
+				end
+				if (71 < 190) do
+					display!setColorb(bgcolor [2], 0x45)
+				end
+				else do
+					display!setColorb_bis(bgcolor [2], 0x64)
+				end
+			end
+			do
+				if (162 < 169) do
+					display!fillRectxwidthvar325(0x37, prevBX as UInt8, 0xA8, bs as UInt8)
+				end
+				else do
+					display!fillRectxwidthvar325_bis(prevBX as UInt8, bs as UInt8, 0xA8, 0x6D)
+				end
+				if (170 < 254) do
+					display!fillRectyheight(0x83, prevBY as UInt8, bs as UInt8)
+				end
+				else do
+					display!fillRectyheight_bis(bs as UInt8, 0xD9, prevBY as UInt8)
+				end
+			end
+		end
+		prevBX = -1
+		prevBY = -1
+	end
+	function drawBall() do
+		var bs : Int16 = (br * 2) / SCALE
+		eraseBall()
+		prevBX = (bx - br) / SCALE
+		prevBY = (by - br) / SCALE
+		do
+			if (142 < 11) do
+				display!setColorvar322gr(199, 183, 0x8C, 0x1D)
+			end
+			else do
+				display!setColorvar322gr_bis(199, 183, 0xBF, 0x8C)
+			end
+			if (253 < 132) do
+				display!setColorb(111, 0xD2)
+			end
+			else do
+				display!setColorb_bis(111, 0x7A)
+			end
+		end
+		do
+			if (155 < 55) do
+				display!fillRectxwidthvar325(0x81, prevBX as UInt8, 0x35, bs as UInt8)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(prevBX as UInt8, bs as UInt8, 0x35, 0xDA)
+			end
+			if (26 < 249) do
+				display!fillRectyheight(0x3F, prevBY as UInt8, bs as UInt8)
+			end
+			else do
+				display!fillRectyheight_bis(bs as UInt8, 0x2A, prevBY as UInt8)
+			end
+		end
+	end
+	function erasePad() do
+		var ps : Int16 = padlen / SCALE
+		if (prevPX > 0) do
+			do
+				if (93 < 214) do
+					display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x30, 0x12)
+				end
+				else do
+					display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x2B, 0x30)
+				end
+				if (1 < 19) do
+					display!setColorb(bgcolor [2], 0xC1)
+				end
+				else do
+					display!setColorb_bis(bgcolor [2], 0x8A)
+				end
+			end
+			do
+				if (242 < 157) do
+					display!fillRectyheight(0x5C, prevPY as UInt8, 4)
+				end
+				else do
+					display!fillRectyheight_bis(4, 0x8E, prevPY as UInt8)
+				end
+				if (60 < 197) do
+					display!fillRectxwidthvar325(0x03, prevPX as UInt8, 0x2B, ps as UInt8)
+				end
+				else do
+					display!fillRectxwidthvar325_bis(prevPX as UInt8, ps as UInt8, 0x2B, 0xDC)
+				end
+			end
+		end
+	end
+	function drawPad() do
+		var ps : Int16 = padlen / SCALE
+		erasePad()
+		prevPX = (padx - (padlen / 2)) / SCALE
+		prevPY = pady / SCALE
+		do
+			if (165 < 28) do
+				display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x11, 0xEB)
+			end
+			else do
+				display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0xFF, 0x11)
+			end
+			if (31 < 143) do
+				display!setColorb(fgcolor [2], 0x8A)
+			end
+			else do
+				display!setColorb_bis(fgcolor [2], 0xFF)
+			end
+		end
+		do
+			if (91 < 145) do
+				display!fillRectyheight(0x83, prevPY as UInt8, 4)
+			end
+			else do
+				display!fillRectyheight_bis(4, 0xD6, prevPY as UInt8)
+			end
+			if (247 < 43) do
+				display!fillRectxwidthvar325(0x47, prevPX as UInt8, 0xB1, ps as UInt8)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(prevPX as UInt8, ps as UInt8, 0xB1, 0x30)
+			end
+		end
+	end
+	function drawCountDown(c : Int16) do
+		do
+			if (191 < 47) do
+				display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x3A, 0xC1)
+			end
+			else do
+				display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x7A, 0x3A)
+			end
+			if (73 < 225) do
+				display!setColorb(fgcolor [2], 0x9F)
+			end
+			else do
+				display!setColorb_bis(fgcolor [2], 0x9E)
+			end
+		end
+		if (c > 0) do
+			do
+				if (202 < 7) do
+					display!setColorb(fgcolor [2], 0xC6)
+				end
+				else do
+					display!setColorb_bis(fgcolor [2], 0x07)
+				end
+				if (22 < 186) do
+					display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x83, 0x7B)
+				end
+				else do
+					display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0xB8, 0x83)
+				end
+			end
+			do
+				if (86 < 132) do
+					display!setBGColorvar323b(0x60, bgcolor [2], 0x67)
+				end
+				else do
+					display!setBGColorvar323b_bis(0x60, 0xAC, bgcolor [2])
+				end
+				if (220 < 12) do
+					display!setBGColorgr(bgcolor [0], 0xDE, bgcolor [1])
+				end
+				else do
+					display!setBGColorgr_bis(0x8B, bgcolor [1], bgcolor [0])
+				end
+			end
+			do
+				if (199 < 24) do
+					display!drawIntegerxdigitsvar326scaley(90, 1, 0x43, 80 - 6, 4, 0x6A)
+				end
+				else do
+					display!drawIntegerxdigitsvar326scaley_bis(80 - 6, 90, 4, 1, 0x6A, 0x7E)
+				end
+				if (8 < 35) do
+					display!drawIntegerv(0x2B, c)
+				end
+				else do
+					display!drawIntegerv_bis(c, 0xDF)
+				end
+			end
+		end
+		else do
+			do
+				if (75 < 162) do
+					display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x6A, 0xE5)
+				end
+				else do
+					display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0xBC, 0x6A)
+				end
+				if (199 < 209) do
+					display!setColorb(bgcolor [2], 0xAB)
+				end
+				else do
+					display!setColorb_bis(bgcolor [2], 0x0B)
+				end
+			end
+			do
+				if (121 < 23) do
+					display!fillRectyheight(0x5F, 90, 20)
+				end
+				else do
+					display!fillRectyheight_bis(20, 0x93, 90)
+				end
+				if (186 < 211) do
+					display!fillRectxwidthvar325(0xEC, 80 - 6, 0xDB, 12)
+				end
+				else do
+					display!fillRectxwidthvar325_bis(80 - 6, 12, 0xDB, 0xC4)
+				end
+			end
+		end
+	end
+	function drawWalls() do
+		do
+			if (242 < 92) do
+				display!setColorb(fgcolor [2], 0xA9)
+			end
+			else do
+				display!setColorb_bis(fgcolor [2], 0x59)
+			end
+			if (4 < 66) do
+				display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x67, 0xCA)
+			end
+			else do
+				display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0xDF, 0x67)
+			end
+		end
+		readonly var left : UInt8 = (LEFT / SCALE) as UInt8
+		readonly var right : UInt8 = (RIGHT / SCALE) as UInt8
+		readonly var top : UInt8 = (TOP / SCALE) as UInt8
+		readonly var bottom : UInt8 = (BOTTOM / SCALE) as UInt8
+		readonly var xcenter : UInt8 = ((RIGHT - LEFT) / SCALE) as UInt8
+		readonly var ycenter : UInt8 = ((BOTTOM - TOP) / SCALE) as UInt8
+		do
+			if (151 < 25) do
+				display!fillRectxwidthvar325(0x36, left - 1, 0x1D, xcenter + 1)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(left - 1, xcenter + 1, 0x1D, 0x4D)
+			end
+			if (155 < 202) do
+				display!fillRectyheight(0x40, top - 1, 1)
+			end
+			else do
+				display!fillRectyheight_bis(1, 0xB2, top - 1)
+			end
+		end
+		do
+			if (16 < 166) do
+				display!fillRectxwidthvar325(0xEE, left - 1, 0xBC, xcenter + 1)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(left - 1, xcenter + 1, 0xBC, 0x4C)
+			end
+			if (41 < 222) do
+				display!fillRectyheight(0xF5, bottom, 1)
+			end
+			else do
+				display!fillRectyheight_bis(1, 0x07, bottom)
+			end
+		end
+		do
+			if (251 < 100) do
+				display!fillRectyheight(0xBF, top, ycenter)
+			end
+			else do
+				display!fillRectyheight_bis(ycenter, 0xE4, top)
+			end
+			if (0 < 73) do
+				display!fillRectxwidthvar325(0xB1, left - 1, 0xC7, 1)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(left - 1, 1, 0xC7, 0xE9)
+			end
+		end
+		do
+			if (103 < 231) do
+				display!fillRectxwidthvar325(0x0C, right, 0x3B, 1)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(right, 1, 0x3B, 0x3B)
+			end
+			if (251 < 111) do
+				display!fillRectyheight(0xBA, top, ycenter)
+			end
+			else do
+				display!fillRectyheight_bis(ycenter, 0x8D, top)
+			end
+		end
+	end
+	function bitIsSet(variable : UInt8, bit : UInt8) : Boolean return (`((1 << ` & bit & `) & ` & variable & `) != 0`) as Boolean
+	abstract function unsetBit(variable : UInt8, bit : UInt8) : UInt8
+
+	function createBricks() do
+		var y : UInt8 = 0
+		while (y < BRICK_ROWS) do
+			bricks[y] = 0xFF
+			var x : UInt8 = 0
+			while (x < 8) do
+				if (bitIsSet(bricks [y], x)) do
+					drawBrick(x, y)
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+	end
+	function bricksLeft() : UInt8 do
+		var result : UInt8 = 0
+		var y : UInt8 = 0
+		while (y < BRICK_ROWS) do
+			var x : UInt8 = 0
+			while (x < 8) do
+				if (bitIsSet(bricks [y], x)) do
+					result = result + 1
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+		return result
+	end
+	function drawBrick(x : UInt8, y : UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT - LEFT) / 8) * x as Int16) / SCALE + 1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE) / SCALE + 1) as UInt8
+		readonly var w : UInt8 = (((RIGHT - LEFT) / 8) / SCALE - 2) as UInt8
+		readonly var h : UInt8 = (BRICK_HEIGHT - 2) as UInt8
+		do
+			if (12 < 108) do
+				display!setColorb(89, 0xD5)
+			end
+			else do
+				display!setColorb_bis(89, 0x0E)
+			end
+			if (94 < 206) do
+				display!setColorvar322gr(103, 155, 0xD8, 0x89)
+			end
+			else do
+				display!setColorvar322gr_bis(103, 155, 0x8F, 0xD8)
+			end
+		end
+		do
+			if (110 < 167) do
+				display!fillRectyheight(0xE0, by, h)
+			end
+			else do
+				display!fillRectyheight_bis(h, 0xCC, by)
+			end
+			if (131 < 0) do
+				display!fillRectxwidthvar325(0x27, bx, 0x9B, w)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(bx, w, 0x9B, 0x1F)
+			end
+		end
+		do
+			if (159 < 237) do
+				display!setColorvar322gr(56, 100, 0x7C, 0xAE)
+			end
+			else do
+				display!setColorvar322gr_bis(56, 100, 0xE3, 0x7C)
+			end
+			if (19 < 122) do
+				display!setColorb(43, 0xE5)
+			end
+			else do
+				display!setColorb_bis(43, 0x26)
+			end
+		end
+		do
+			if (5 < 124) do
+				display!drawRectvar324xwidthheight(w, 0xA4, 0x5C, h, bx)
+			end
+			else do
+				display!drawRectvar324xwidthheight_bis(w, 0xA4, bx, h, 0xDC)
+			end
+			if (139 < 231) do
+				display!drawRecty(by, 0xDA)
+			end
+			else do
+				display!drawRecty_bis(by, 0x13)
+			end
+		end
+	end
+	function removeBrick(x : UInt8, y : UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT - LEFT) / 8) * x as Int16) / SCALE + 1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE) / SCALE + 1) as UInt8
+		do
+			if (44 < 97) do
+				display!setColorb(bgcolor [2], 0x05)
+			end
+			else do
+				display!setColorb_bis(bgcolor [2], 0x8C)
+			end
+			if (54 < 212) do
+				display!setColorvar322gr(bgcolor [1], bgcolor [0], 0xC6, 0x78)
+			end
+			else do
+				display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x26, 0xC6)
+			end
+		end
+		do
+			if (137 < 191) do
+				display!fillRectyheight(0xC6, by, BRICK_HEIGHT - 2)
+			end
+			else do
+				display!fillRectyheight_bis(BRICK_HEIGHT - 2, 0x60, by)
+			end
+			if (87 < 6) do
+				display!fillRectxwidthvar325(0x37, bx, 0xA1, (((RIGHT - LEFT) / 8) / SCALE - 2) as UInt8)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(bx, (((RIGHT - LEFT) / 8) / SCALE - 2) as UInt8, 0xA1, 0x88)
+			end
+		end
+		bricks[y] = unsetBit(bricks [y], x)
+	end
+	function collideBrick(xpos : Int16, ypos : Int16) : Boolean do
+		var bry : Int16 = (ypos as Int16 - TOP - 20 * SCALE) / (BRICK_HEIGHT as Int16 * SCALE)
+		var result : Boolean = false
+		if (bry >= 0 and bry < BRICK_ROWS as Int16) do
+			var brx : Int16 = (xpos as Int16 - LEFT) / ((RIGHT - LEFT) / 8)
+			if (bitIsSet(bricks [bry], brx as UInt8)) do
+				removeBrick(brx as UInt8, bry as UInt8)
+				result = true
+			end
+		end
+		return result
+	end
+	function drawLevel() do
+		do
+			if (112 < 120) do
+				display!setColorb(130, 0x75)
+			end
+			else do
+				display!setColorb_bis(130, 0x6F)
+			end
+			if (95 < 182) do
+				display!setColorvar322gr(209, 158, 0x35, 0xE8)
+			end
+			else do
+				display!setColorvar322gr_bis(209, 158, 0xDE, 0x35)
+			end
+		end
+		do
+			if (211 < 40) do
+				display!setBGColorvar323b(0x37, fgcolor [2], 0xBF)
+			end
+			else do
+				display!setBGColorvar323b_bis(0x37, 0x85, fgcolor [2])
+			end
+			if (52 < 44) do
+				display!setBGColorgr(fgcolor [0], 0xF1, fgcolor [1])
+			end
+			else do
+				display!setBGColorgr_bis(0x5B, fgcolor [1], fgcolor [0])
+			end
+		end
+		do
+			if (158 < 155) do
+				display!setColorb(bgcolor [2], 0xFD)
+			end
+			else do
+				display!setColorb_bis(bgcolor [2], 0x76)
+			end
+			if (106 < 245) do
+				display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x48, 0x95)
+			end
+			else do
+				display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x18, 0x48)
+			end
+		end
+		do
+			if (229 < 120) do
+				display!drawIntegerxdigitsvar326scaley(2, 2, 0x76, 6, 2, 0xA4)
+			end
+			else do
+				display!drawIntegerxdigitsvar326scaley_bis(6, 2, 2, 2, 0xA4, 0x08)
+			end
+			if (155 < 179) do
+				display!drawIntegerv(0x9F, level as Int16)
+			end
+			else do
+				display!drawIntegerv_bis(level as Int16, 0xE3)
+			end
+		end
+	end
+	function incrementScore(diff : Int8) do
+		score = score + diff as Int16
+		if (score < 0) score = 0
+		drawScore()
+	end
+	function drawScore() do
+		do
+			if (90 < 105) do
+				display!setColorb(130, 0xB6)
+			end
+			else do
+				display!setColorb_bis(130, 0x0B)
+			end
+			if (14 < 76) do
+				display!setColorvar322gr(209, 158, 0x31, 0x7F)
+			end
+			else do
+				display!setColorvar322gr_bis(209, 158, 0x8E, 0x31)
+			end
+		end
+		do
+			if (20 < 198) do
+				display!setBGColorgr(fgcolor [0], 0xE5, fgcolor [1])
+			end
+			else do
+				display!setBGColorgr_bis(0x63, fgcolor [1], fgcolor [0])
+			end
+			if (206 < 56) do
+				display!setBGColorvar323b(0xB5, fgcolor [2], 0x9D)
+			end
+			else do
+				display!setBGColorvar323b_bis(0xB5, 0x35, fgcolor [2])
+			end
+		end
+		do
+			if (144 < 255) do
+				display!drawIntegerv(0x0F, score)
+			end
+			else do
+				display!drawIntegerv_bis(score, 0x07)
+			end
+			if (110 < 244) do
+				display!drawIntegerxdigitsvar326scaley(2, 5, 0x44, 58, 2, 0x94)
+			end
+			else do
+				display!drawIntegerxdigitsvar326scaley_bis(58, 2, 2, 5, 0x94, 0xB1)
+			end
+		end
+	end
+	function drawLives() do
+		do
+			if (144 < 102) do
+				display!setColorb(fgcolor [2], 0xE6)
+			end
+			else do
+				display!setColorb_bis(fgcolor [2], 0x59)
+			end
+			if (73 < 168) do
+				display!setColorvar322gr(fgcolor [1], fgcolor [0], 0xE2, 0xA0)
+			end
+			else do
+				display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x40, 0xE2)
+			end
+		end
+		do
+			if (12 < 117) do
+				display!fillRectxwidthvar325(0xC9, 124, 0xF9, 24 + 6)
+			end
+			else do
+				display!fillRectxwidthvar325_bis(124, 24 + 6, 0xF9, 0x33)
+			end
+			if (5 < 70) do
+				display!fillRectyheight(0x50, 4, 6)
+			end
+			else do
+				display!fillRectyheight_bis(6, 0xCE, 4)
+			end
+		end
+		do
+			if (241 < 100) do
+				display!setColorb(111, 0x5E)
+			end
+			else do
+				display!setColorb_bis(111, 0xA5)
+			end
+			if (197 < 166) do
+				display!setColorvar322gr(199, 183, 0x6F, 0xFC)
+			end
+			else do
+				display!setColorvar322gr_bis(199, 183, 0xDB, 0x6F)
+			end
+		end
+		var i : UInt8 = 0
+		while (i < lives) do
+			do
+				if (123 < 73) do
+					display!fillRectyheight(0xF0, 4, 6)
+				end
+				else do
+					display!fillRectyheight_bis(6, 0x4B, 4)
+				end
+				if (215 < 187) do
+					display!fillRectxwidthvar325(0xFD, 124 + (2 - i) * 12, 0x8D, 6)
+				end
+				else do
+					display!fillRectxwidthvar325_bis(124 + (2 - i) * 12, 6, 0x8D, 0x38)
+				end
+			end
+			i = i + 1
+		end
+	end
+	statechart SC init INIT {
+		property controller_position_y : Int16
+		property controller_position_var334 : Byte
+		property controller_position_x : Int16
+		property received_controller_positiony : Boolean
+		property received_controller_positionvar334x : Boolean
+		state INIT {
+			property display_displayReady_var331 : Byte
+			property received_display_displayReady_ : Boolean
+			property received_display_displayReadyvar331 : Boolean
+			on entry do
+				if (94 < 168) do
+					display!createxsize(XDISPSIZE, 0x74)
+				end
+				else do
+					display!createxsize_bis(XDISPSIZE, 0xF1)
+				end
+				if (101 < 183) do
+					display!createysizevar328(0x2D, 0xFB, YDISPSIZE)
+				end
+				else do
+					display!createysizevar328_bis(0xFB, YDISPSIZE, 0x67)
+				end
+			end
+			internal
+			event display?displayReady_
+			guard not received_display_displayReadyvar331
+			action do
+				received_display_displayReady_ = true
+			end
+			internal
+			event display?displayReadyvar331
+			guard not received_display_displayReady_
+			action do
+				received_display_displayReadyvar331 = true
+			end
+			internal
+			event display?displayReady__bis
+			guard not received_display_displayReadyvar331
+			action do
+				received_display_displayReady_ = true
+			end
+			internal
+			event display?displayReadyvar331_bis
+			guard not received_display_displayReady_
+			action do
+				received_display_displayReadyvar331 = true
+			end
+			transition -> LAUNCH
+			event display?displayReady_
+			guard received_display_displayReadyvar331
+			action do
+				do
+					do
+						if (15 < 189) do
+							display!clear_(0xE5)
+						end
+						else do
+							display!clear__bis(0x57)
+						end
+						if (119 < 167) do
+							display!clearvar321(0xC7, 0x8F)
+						end
+						else do
+							display!clearvar321_bis(0xB8, 0x8F)
+						end
+					end
+					initColors()
+					do
+						if (121 < 44) do
+							display!setColorb(bgcolor [2], 0xFF)
+						end
+						else do
+							display!setColorb_bis(bgcolor [2], 0x30)
+						end
+						if (91 < 120) do
+							display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x77, 0x21)
+						end
+						else do
+							display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x9E, 0x77)
+						end
+					end
+					do
+						if (167 < 233) do
+							display!fillRectxwidthvar325(0x53, 0, 0xDD, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0xDD, 0x18)
+						end
+						if (43 < 16) do
+							display!fillRectyheight(0xAF, 0, YDISPSIZE)
+						end
+						else do
+							display!fillRectyheight_bis(YDISPSIZE, 0x0C, 0)
+						end
+					end
+					do
+						if (255 < 143) do
+							display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x55, 0xD4)
+						end
+						else do
+							display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x4F, 0x55)
+						end
+						if (106 < 163) do
+							display!setColorb(fgcolor [2], 0x8E)
+						end
+						else do
+							display!setColorb_bis(fgcolor [2], 0xBE)
+						end
+					end
+					do
+						if (151 < 50) do
+							display!fillRectxwidthvar325(0x7D, 0, 0x3B, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0x3B, 0xAE)
+						end
+						if (130 < 27) do
+							display!fillRectyheight(0xA7, 0, 14)
+						end
+						else do
+							display!fillRectyheight_bis(14, 0x20, 0)
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReady_ = false
+				received_display_displayReadyvar331 = false
+			end
+			transition -> LAUNCH
+			event display?displayReadyvar331
+			guard received_display_displayReady_
+			action do
+				do
+					do
+						if (89 < 39) do
+							display!clearvar321(0xCC, 0x8F)
+						end
+						else do
+							display!clearvar321_bis(0xA1, 0x8F)
+						end
+						if (174 < 146) do
+							display!clear_(0xEF)
+						end
+						else do
+							display!clear__bis(0x2A)
+						end
+					end
+					initColors()
+					do
+						if (201 < 46) do
+							display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x77, 0x04)
+						end
+						else do
+							display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x1F, 0x77)
+						end
+						if (176 < 152) do
+							display!setColorb(bgcolor [2], 0x1B)
+						end
+						else do
+							display!setColorb_bis(bgcolor [2], 0x18)
+						end
+					end
+					do
+						if (11 < 248) do
+							display!fillRectyheight(0x86, 0, YDISPSIZE)
+						end
+						else do
+							display!fillRectyheight_bis(YDISPSIZE, 0x05, 0)
+						end
+						if (158 < 108) do
+							display!fillRectxwidthvar325(0xDE, 0, 0xDD, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0xDD, 0x61)
+						end
+					end
+					do
+						if (251 < 86) do
+							display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x55, 0xA3)
+						end
+						else do
+							display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x64, 0x55)
+						end
+						if (111 < 103) do
+							display!setColorb(fgcolor [2], 0xC3)
+						end
+						else do
+							display!setColorb_bis(fgcolor [2], 0x38)
+						end
+					end
+					do
+						if (3 < 164) do
+							display!fillRectyheight(0xD8, 0, 14)
+						end
+						else do
+							display!fillRectyheight_bis(14, 0xA7, 0)
+						end
+						if (104 < 59) do
+							display!fillRectxwidthvar325(0x17, 0, 0x3B, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0x3B, 0x1F)
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReadyvar331 = false
+				received_display_displayReady_ = false
+			end
+			transition -> LAUNCH
+			event display?displayReady__bis
+			guard received_display_displayReadyvar331
+			action do
+				do
+					do
+						if (15 < 189) do
+							display!clear_(0xCD)
+						end
+						else do
+							display!clear__bis(0xA0)
+						end
+						if (119 < 167) do
+							display!clearvar321(0x66, 0x8F)
+						end
+						else do
+							display!clearvar321_bis(0x5B, 0x8F)
+						end
+					end
+					initColors()
+					do
+						if (121 < 44) do
+							display!setColorb(bgcolor [2], 0x17)
+						end
+						else do
+							display!setColorb_bis(bgcolor [2], 0x58)
+						end
+						if (91 < 120) do
+							display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x77, 0xDD)
+						end
+						else do
+							display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0x38, 0x77)
+						end
+					end
+					do
+						if (167 < 233) do
+							display!fillRectxwidthvar325(0x60, 0, 0xDD, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0xDD, 0xCD)
+						end
+						if (43 < 16) do
+							display!fillRectyheight(0xB7, 0, YDISPSIZE)
+						end
+						else do
+							display!fillRectyheight_bis(YDISPSIZE, 0x78, 0)
+						end
+					end
+					do
+						if (255 < 143) do
+							display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x55, 0xEC)
+						end
+						else do
+							display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x10, 0x55)
+						end
+						if (106 < 163) do
+							display!setColorb(fgcolor [2], 0x6B)
+						end
+						else do
+							display!setColorb_bis(fgcolor [2], 0xEB)
+						end
+					end
+					do
+						if (151 < 50) do
+							display!fillRectxwidthvar325(0xD3, 0, 0x3B, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0x3B, 0xA0)
+						end
+						if (130 < 27) do
+							display!fillRectyheight(0x2E, 0, 14)
+						end
+						else do
+							display!fillRectyheight_bis(14, 0x88, 0)
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReady_ = false
+				received_display_displayReadyvar331 = false
+			end
+			transition -> LAUNCH
+			event display?displayReadyvar331_bis
+			guard received_display_displayReady_
+			action do
+				do
+					do
+						if (89 < 39) do
+							display!clearvar321(0x7B, 0x8F)
+						end
+						else do
+							display!clearvar321_bis(0xCB, 0x8F)
+						end
+						if (174 < 146) do
+							display!clear_(0xCE)
+						end
+						else do
+							display!clear__bis(0x1A)
+						end
+					end
+					initColors()
+					do
+						if (201 < 46) do
+							display!setColorvar322gr(bgcolor [1], bgcolor [0], 0x77, 0x4D)
+						end
+						else do
+							display!setColorvar322gr_bis(bgcolor [1], bgcolor [0], 0xA8, 0x77)
+						end
+						if (176 < 152) do
+							display!setColorb(bgcolor [2], 0x8F)
+						end
+						else do
+							display!setColorb_bis(bgcolor [2], 0x03)
+						end
+					end
+					do
+						if (11 < 248) do
+							display!fillRectyheight(0x11, 0, YDISPSIZE)
+						end
+						else do
+							display!fillRectyheight_bis(YDISPSIZE, 0xFC, 0)
+						end
+						if (158 < 108) do
+							display!fillRectxwidthvar325(0xC6, 0, 0xDD, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0xDD, 0x0F)
+						end
+					end
+					do
+						if (251 < 86) do
+							display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x55, 0x3F)
+						end
+						else do
+							display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0xC0, 0x55)
+						end
+						if (111 < 103) do
+							display!setColorb(fgcolor [2], 0xDE)
+						end
+						else do
+							display!setColorb_bis(fgcolor [2], 0xF9)
+						end
+					end
+					do
+						if (3 < 164) do
+							display!fillRectyheight(0x50, 0, 14)
+						end
+						else do
+							display!fillRectyheight_bis(14, 0x33, 0)
+						end
+						if (104 < 59) do
+							display!fillRectxwidthvar325(0x53, 0, 0x3B, XDISPSIZE)
+						end
+						else do
+							display!fillRectxwidthvar325_bis(0, XDISPSIZE, 0x3B, 0x54)
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReadyvar331 = false
+				received_display_displayReady_ = false
+			end
+		}
+		state LAUNCH {
+			property countdown : UInt8
+			on entry do
+				clock!timer_start(0xCF, 0x78, 0, 33)
+				countdown = 30 * 3
+				drawScore()
+				drawLives()
+				do
+					if (30 < 248) do
+						display!update_(0x9C)
+					end
+					else do
+						display!update__bis(0xB1)
+					end
+					if (91 < 142) do
+						display!updatevar330(0x7D, 0xCF)
+					end
+					else do
+						display!updatevar330_bis(0x39, 0x7D)
+					end
+				end
+			end
+			internal
+			event t : clock?timer_timeout
+			guard t.id == 0 and countdown > 0
+			action do
+				clock!timer_start(0x06, 0x57, 0, 33)
+				drawPad()
+				if ((countdown % 30) == 0) drawCountDown(countdown as Int16 / 30)
+				countdown = countdown - 1
+				do
+					if (62 < 30) do
+						display!update_(0x28)
+					end
+					else do
+						display!update__bis(0x49)
+					end
+					if (183 < 166) do
+						display!updatevar330(0x68, 0x52)
+					end
+					else do
+						display!updatevar330_bis(0x03, 0x68)
+					end
+				end
+			end
+			transition -> PLAY
+			event t : clock?timer_timeout
+			guard t.id == 0 and countdown == 0
+			action do
+				drawCountDown(0)
+				resetBall()
+				do
+					if (239 < 180) do
+						display!updatevar330(0xD6, 0x0F)
+					end
+					else do
+						display!updatevar330_bis(0x7E, 0xD6)
+					end
+					if (131 < 17) do
+						display!update_(0xD5)
+					end
+					else do
+						display!update__bis(0x3E)
+					end
+				end
+			end
+		}
+		state PLAY {
+			property game_lostBall_var339 : Byte
+			property received_game_lostBall_ : Boolean
+			property received_game_lostBallvar339 : Boolean
+			property game_nextLevel_var340 : Byte
+			property received_game_nextLevel_ : Boolean
+			property received_game_nextLevelvar340 : Boolean
+			property pro_game_lostBall_var339 : Byte
+			property received_pro_game_lostBall_ : Boolean
+			property received_pro_game_lostBallvar339 : Boolean
+			property pro_game_nextLevel_var340 : Byte
+			property received_pro_game_nextLevel_ : Boolean
+			property received_pro_game_nextLevelvar340 : Boolean
+			on entry do
+				clock!timer_start(0x82, 0xFB, 0, period)
+			end
+			internal
+			event t : clock?timer_timeout
+			guard t.id == 0
+			action do
+				bx = bx + dx
+				by = by + dy
+				var wl : Int16 = LEFT + br
+				var wr : Int16 = RIGHT - br
+				var wt : Int16 = TOP + br
+				var wb : Int16 = BOTTOM - br
+				if (bx < wl) do
+					do
+						if (44 < 2) do
+							sound!tonetime(tone_duration, 0x25)
+						end
+						else do
+							sound!tonetime_bis(tone_duration, 0xD7)
+						end
+						if (96 < 53) do
+							sound!tonefreqvar338(0x6F, tone2, 0xED)
+						end
+						else do
+							sound!tonefreqvar338_bis(0x92, 0xED, tone2)
+						end
+					end
+					dx = -dx
+					bx = 2 * wl - bx
+					incrementScore(-1)
+				end
+				else if (bx > wr) do
+					do
+						if (207 < 97) do
+							sound!tonefreqvar338(0x47, tone2, 0xB5)
+						end
+						else do
+							sound!tonefreqvar338_bis(0x9B, 0xB5, tone2)
+						end
+						if (133 < 210) do
+							sound!tonetime(tone_duration, 0x75)
+						end
+						else do
+							sound!tonetime_bis(tone_duration, 0xDE)
+						end
+					end
+					dx = -dx
+					bx = 2 * wr - bx
+					incrementScore(-1)
+				end
+				if (by < wt) do
+					do
+						if (129 < 252) do
+							sound!tonefreqvar338(0x50, tone2, 0xA3)
+						end
+						else do
+							sound!tonefreqvar338_bis(0x3D, 0xA3, tone2)
+						end
+						if (203 < 136) do
+							sound!tonetime(tone_duration, 0x25)
+						end
+						else do
+							sound!tonetime_bis(tone_duration, 0x35)
+						end
+					end
+					dy = -dy
+					by = 2 * wt - by
+					incrementScore(-1)
+				end
+				else if (by > wb) do
+					do
+						if (208 < 178) do
+							game!lostBall_(0xC1)
+						end
+						else do
+							game!lostBall__bis(0xDC)
+						end
+						if (125 < 10) do
+							game!lostBallvar339(0x99, 0x57)
+						end
+						else do
+							game!lostBallvar339_bis(0x99, 0x57)
+						end
+					end
+					do
+						if (208 < 42) do
+							req_game!lostBallvar339(0xF5, 0x31)
+						end
+						else do
+							req_game!lostBallvar339_bis(0x05, 0x31)
+						end
+						if (148 < 56) do
+							req_game!lostBall_(0xAD)
+						end
+						else do
+							req_game!lostBall__bis(0xE3)
+						end
+					end
+				end
+				if (dy > 0) do
+					if (by > pady - br and by < pady + br) do
+						if (bx > padx - padlen / 2 and bx < padx + padlen / 2) do
+							do
+								if (155 < 30) do
+									sound!tonefreqvar338(0x34, tone2, 0xC0)
+								end
+								else do
+									sound!tonefreqvar338_bis(0x92, 0xC0, tone2)
+								end
+								if (20 < 41) do
+									sound!tonetime(tone_duration, 0xB3)
+								end
+								else do
+									sound!tonetime_bis(tone_duration, 0xB9)
+								end
+							end
+							dy = -dy
+							by = 2 * (pady - br) - by
+							dx = dx / 4 + (bx - padx) / 4
+						end
+					end
+				end
+				var collision : Boolean = collideBrick(bx - br, by - br)or collideBrick(bx + br, by - br)or collideBrick(bx + br, by + br)or collideBrick(bx - br, by + br)
+				if (collision) do
+					do
+						if (131 < 115) do
+							sound!tonetime(tone_duration, 0x15)
+						end
+						else do
+							sound!tonetime_bis(tone_duration, 0x63)
+						end
+						if (136 < 153) do
+							sound!tonefreqvar338(0x50, tone1, 0x54)
+						end
+						else do
+							sound!tonefreqvar338_bis(0xE2, 0x54, tone1)
+						end
+					end
+					dy = -dy
+					incrementScore(10)
+					if (bricksLeft()== 0) do
+						do
+							if (179 < 126) do
+								game!nextLevelvar340(0x47, 0x7D)
+							end
+							else do
+								game!nextLevelvar340_bis(0x7D, 0x17)
+							end
+							if (48 < 80) do
+								game!nextLevel_(0x1B)
+							end
+							else do
+								game!nextLevel__bis(0x1C)
+							end
+						end
+						do
+							if (35 < 13) do
+								req_game!nextLevel_(0x68)
+							end
+							else do
+								req_game!nextLevel__bis(0x78)
+							end
+							if (52 < 235) do
+								req_game!nextLevelvar340(0xC0, 0x68)
+							end
+							else do
+								req_game!nextLevelvar340_bis(0x68, 0x5A)
+							end
+						end
+					end
+				end
+				drawBall()
+				drawPad()
+				do
+					if (249 < 148) do
+						ia!updateIApadxballxvar335bally(padx, by, bx, 0x23, 0x8E)
+					end
+					else do
+						ia!updateIApadxballxvar335bally_bis(padx, by, 0x8E, bx, 0x02)
+					end
+					if (41 < 215) do
+						ia!updateIApady(0x9B, pady)
+					end
+					else do
+						ia!updateIApady_bis(pady, 0xC5)
+					end
+				end
+				do
+					if (245 < 204) do
+						display!update_(0xB7)
+					end
+					else do
+						display!update__bis(0xDC)
+					end
+					if (14 < 67) do
+						display!updatevar330(0x90, 0x60)
+					end
+					else do
+						display!updatevar330_bis(0x59, 0x90)
+					end
+				end
+				log(false)
+				clock!timer_start(0x4A, 0x3E, 0, period)
+			end
+			internal
+			event game?lostBall_
+			guard not received_game_lostBallvar339
+			action do
+				received_game_lostBall_ = true
+			end
+			internal
+			event game?lostBallvar339
+			guard not received_game_lostBall_
+			action do
+				received_game_lostBallvar339 = true
+			end
+			internal
+			event game?nextLevel_
+			guard not received_game_nextLevelvar340
+			action do
+				received_game_nextLevel_ = true
+			end
+			internal
+			event game?nextLevelvar340
+			guard not received_game_nextLevel_
+			action do
+				received_game_nextLevelvar340 = true
+			end
+			internal
+			event pro_game?lostBall_
+			guard not received_pro_game_lostBallvar339
+			action do
+				received_pro_game_lostBall_ = true
+			end
+			internal
+			event pro_game?lostBallvar339
+			guard not received_pro_game_lostBall_
+			action do
+				received_pro_game_lostBallvar339 = true
+			end
+			internal
+			event pro_game?nextLevel_
+			guard not received_pro_game_nextLevelvar340
+			action do
+				received_pro_game_nextLevel_ = true
+			end
+			internal
+			event pro_game?nextLevelvar340
+			guard not received_pro_game_nextLevel_
+			action do
+				received_pro_game_nextLevelvar340 = true
+			end
+			internal
+			event game?lostBall__bis
+			guard not received_game_lostBallvar339
+			action do
+				received_game_lostBall_ = true
+			end
+			internal
+			event game?lostBallvar339_bis
+			guard not received_game_lostBall_
+			action do
+				received_game_lostBallvar339 = true
+			end
+			internal
+			event game?nextLevel__bis
+			guard not received_game_nextLevelvar340
+			action do
+				received_game_nextLevel_ = true
+			end
+			internal
+			event game?nextLevelvar340_bis
+			guard not received_game_nextLevel_
+			action do
+				received_game_nextLevelvar340 = true
+			end
+			internal
+			event pro_game?lostBall__bis
+			guard not received_pro_game_lostBallvar339
+			action do
+				received_pro_game_lostBall_ = true
+			end
+			internal
+			event pro_game?lostBallvar339_bis
+			guard not received_pro_game_lostBall_
+			action do
+				received_pro_game_lostBallvar339 = true
+			end
+			internal
+			event pro_game?nextLevel__bis
+			guard not received_pro_game_nextLevelvar340
+			action do
+				received_pro_game_nextLevel_ = true
+			end
+			internal
+			event pro_game?nextLevelvar340_bis
+			guard not received_pro_game_nextLevel_
+			action do
+				received_pro_game_nextLevelvar340 = true
+			end
+			transition -> LOSTBALL
+			event game?lostBall_
+			guard received_game_lostBallvar339
+			action do
+				clock!timer_cancel(0, 0xE4, 0x72)
+				received_game_lostBall_ = false
+				received_game_lostBallvar339 = false
+			end
+			transition -> LOSTBALL
+			event game?lostBallvar339
+			guard received_game_lostBall_
+			action do
+				clock!timer_cancel(0, 0xE4, 0xA3)
+				received_game_lostBallvar339 = false
+				received_game_lostBall_ = false
+			end
+			transition -> NEXTLEVEL
+			event game?nextLevel_
+			guard received_game_nextLevelvar340
+			action do
+				clock!timer_cancel(0, 0x7E, 0x3F)
+				received_game_nextLevel_ = false
+				received_game_nextLevelvar340 = false
+			end
+			transition -> NEXTLEVEL
+			event game?nextLevelvar340
+			guard received_game_nextLevel_
+			action do
+				clock!timer_cancel(0, 0x7E, 0x93)
+				received_game_nextLevelvar340 = false
+				received_game_nextLevel_ = false
+			end
+			transition -> LOSTBALL
+			event pro_game?lostBall_
+			guard received_pro_game_lostBallvar339
+			action do
+				clock!timer_cancel(0, 0xDE, 0xCA)
+				received_pro_game_lostBall_ = false
+				received_pro_game_lostBallvar339 = false
+			end
+			transition -> LOSTBALL
+			event pro_game?lostBallvar339
+			guard received_pro_game_lostBall_
+			action do
+				clock!timer_cancel(0, 0xDE, 0xA5)
+				received_pro_game_lostBallvar339 = false
+				received_pro_game_lostBall_ = false
+			end
+			transition -> NEXTLEVEL
+			event pro_game?nextLevel_
+			guard received_pro_game_nextLevelvar340
+			action do
+				clock!timer_cancel(0, 0x2F, 0x4A)
+				received_pro_game_nextLevel_ = false
+				received_pro_game_nextLevelvar340 = false
+			end
+			transition -> NEXTLEVEL
+			event pro_game?nextLevelvar340
+			guard received_pro_game_nextLevel_
+			action do
+				clock!timer_cancel(0, 0x2F, 0x97)
+				received_pro_game_nextLevelvar340 = false
+				received_pro_game_nextLevel_ = false
+			end
+			transition -> LOSTBALL
+			event game?lostBall__bis
+			guard received_game_lostBallvar339
+			action do
+				clock!timer_cancel(0, 0xE4, 0x9F)
+				received_game_lostBall_ = false
+				received_game_lostBallvar339 = false
+			end
+			transition -> LOSTBALL
+			event game?lostBallvar339_bis
+			guard received_game_lostBall_
+			action do
+				clock!timer_cancel(0, 0xE4, 0x58)
+				received_game_lostBallvar339 = false
+				received_game_lostBall_ = false
+			end
+			transition -> NEXTLEVEL
+			event game?nextLevel__bis
+			guard received_game_nextLevelvar340
+			action do
+				clock!timer_cancel(0, 0x7E, 0xF8)
+				received_game_nextLevel_ = false
+				received_game_nextLevelvar340 = false
+			end
+			transition -> NEXTLEVEL
+			event game?nextLevelvar340_bis
+			guard received_game_nextLevel_
+			action do
+				clock!timer_cancel(0, 0x7E, 0x9C)
+				received_game_nextLevelvar340 = false
+				received_game_nextLevel_ = false
+			end
+			transition -> LOSTBALL
+			event pro_game?lostBall__bis
+			guard received_pro_game_lostBallvar339
+			action do
+				clock!timer_cancel(0, 0xDE, 0x53)
+				received_pro_game_lostBall_ = false
+				received_pro_game_lostBallvar339 = false
+			end
+			transition -> LOSTBALL
+			event pro_game?lostBallvar339_bis
+			guard received_pro_game_lostBall_
+			action do
+				clock!timer_cancel(0, 0xDE, 0xED)
+				received_pro_game_lostBallvar339 = false
+				received_pro_game_lostBall_ = false
+			end
+			transition -> NEXTLEVEL
+			event pro_game?nextLevel__bis
+			guard received_pro_game_nextLevelvar340
+			action do
+				clock!timer_cancel(0, 0x2F, 0x49)
+				received_pro_game_nextLevel_ = false
+				received_pro_game_nextLevelvar340 = false
+			end
+			transition -> NEXTLEVEL
+			event pro_game?nextLevelvar340_bis
+			guard received_pro_game_nextLevel_
+			action do
+				clock!timer_cancel(0, 0x2F, 0xF2)
+				received_pro_game_nextLevelvar340 = false
+				received_pro_game_nextLevel_ = false
+			end
+		}
+		state LOSTBALL {
+			on entry do
+				clock!timer_start(0x5F, 0xA0, 0, 500)
+				lives = lives - 1
+				eraseBall()
+				erasePad()
+				drawLives()
+				do
+					if (5 < 79) do
+						display!updatevar330(0x99, 0x8C)
+					end
+					else do
+						display!updatevar330_bis(0xD8, 0x99)
+					end
+					if (214 < 214) do
+						display!update_(0xE5)
+					end
+					else do
+						display!update__bis(0xED)
+					end
+				end
+				log(true)
+			end
+			transition -> LAUNCH
+			event t : clock?timer_timeout
+			guard t.id == 0 and lives > 0
+			transition -> GAMEOVER
+			event t : clock?timer_timeout
+			guard t.id == 0 and lives == 0
+		}
+		state NEXTLEVEL {
+			on entry do
+				clock!timer_start(0xBE, 0xF6, 0, 1000)
+				level = level + 1
+				drawLevel()
+				eraseBall()
+				erasePad()
+				if ((level % 2) == 0 and padlen > 5 * SCALE) padlen = padlen - (4 * SCALE)
+				if ((level % 2) == 1) dy = (dy * 3) / 2
+				drawLives()
+				createBricks()
+				do
+					if (42 < 217) do
+						display!updatevar330(0x13, 0x8A)
+					end
+					else do
+						display!updatevar330_bis(0xB2, 0x13)
+					end
+					if (184 < 162) do
+						display!update_(0x95)
+					end
+					else do
+						display!update__bis(0xFA)
+					end
+				end
+			end
+			transition -> LAUNCH
+			event t : clock?timer_timeout
+			guard t.id == 0
+		}
+		final state GAMEOVER {
+			on entry do
+				eraseBall()
+				erasePad()
+				do
+					if (61 < 201) do
+						display!setColorvar322gr(255, 255, 0xE2, 0xC5)
+					end
+					else do
+						display!setColorvar322gr_bis(255, 255, 0x61, 0xE2)
+					end
+					if (146 < 237) do
+						display!setColorb(255, 0xA5)
+					end
+					else do
+						display!setColorb_bis(255, 0xD3)
+					end
+				end
+				do
+					if (178 < 83) do
+						display!fillRectyheight(0xE0, 30, 76)
+					end
+					else do
+						display!fillRectyheight_bis(76, 0xA4, 30)
+					end
+					if (10 < 167) do
+						display!fillRectxwidthvar325(0x51, 8, 0x11, 142)
+					end
+					else do
+						display!fillRectxwidthvar325_bis(8, 142, 0x11, 0xE0)
+					end
+				end
+				do
+					if (222 < 53) do
+						display!setColorvar322gr(fgcolor [1], fgcolor [0], 0x37, 0x52)
+					end
+					else do
+						display!setColorvar322gr_bis(fgcolor [1], fgcolor [0], 0x9D, 0x37)
+					end
+					if (3 < 32) do
+						display!setColorb(fgcolor [2], 0xEF)
+					end
+					else do
+						display!setColorb_bis(fgcolor [2], 0x80)
+					end
+				end
+				do
+					if (217 < 200) do
+						display!fillRectyheight(0x88, 31, 50)
+					end
+					else do
+						display!fillRectyheight_bis(50, 0x37, 31)
+					end
+					if (48 < 117) do
+						display!fillRectxwidthvar325(0x62, 9, 0xCE, 140)
+					end
+					else do
+						display!fillRectxwidthvar325_bis(9, 140, 0xCE, 0xEA)
+					end
+				end
+				do
+					if (118 < 195) do
+						display!setBGColorgr(fgcolor [0], 0x9D, fgcolor [1])
+					end
+					else do
+						display!setBGColorgr_bis(0x96, fgcolor [1], fgcolor [0])
+					end
+					if (140 < 239) do
+						display!setBGColorvar323b(0xA2, fgcolor [2], 0xD5)
+					end
+					else do
+						display!setBGColorvar323b_bis(0xA2, 0x01, fgcolor [2])
+					end
+				end
+				do
+					if (100 < 42) do
+						display!setColorb(130, 0x8D)
+					end
+					else do
+						display!setColorb_bis(130, 0x78)
+					end
+					if (219 < 107) do
+						display!setColorvar322gr(209, 158, 0x6A, 0xBE)
+					end
+					else do
+						display!setColorvar322gr_bis(209, 158, 0xBC, 0x6A)
+					end
+				end
+				do
+					if (99 < 40) do
+						display!drawIntegerxdigitsvar326scaley(40, 5, 0x50, 23, 6, 0x23)
+					end
+					else do
+						display!drawIntegerxdigitsvar326scaley_bis(23, 40, 6, 5, 0x23, 0xD0)
+					end
+					if (99 < 112) do
+						display!drawIntegerv(0xD5, score)
+					end
+					else do
+						display!drawIntegerv_bis(score, 0xEC)
+					end
+				end
+				do
+					if (236 < 180) do
+						display!drawThingMLy(0x6B, 87)
+					end
+					else do
+						display!drawThingMLy_bis(87, 0xF8)
+					end
+					if (68 < 138) do
+						display!drawThingMLvar327x(0x9D, 0xF9, 26)
+					end
+					else do
+						display!drawThingMLvar327x_bis(0xDB, 26, 0x9D)
+					end
+				end
+				do
+					if (249 < 247) do
+						display!update_(0xB0)
+					end
+					else do
+						display!update__bis(0x6B)
+					end
+					if (145 < 186) do
+						display!updatevar330(0xB7, 0x37)
+					end
+					else do
+						display!updatevar330_bis(0xAB, 0xB7)
+					end
+				end
+				log(true)
+				quit()
+			end
+		}
+		internal
+		event e : controller?positiony
+		action do
+			received_controller_positiony = true
+			controller_position_y = e.y
+			if (received_controller_positionvar334x) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positiony = false
+					received_controller_positionvar334x = false
+				end
+			end
+		end
+		internal
+		event e : controller?positionvar334x
+		action do
+			received_controller_positionvar334x = true
+			controller_position_var334 = e.var334
+			controller_position_x = e.x
+			if (received_controller_positiony) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positionvar334x = false
+					received_controller_positiony = false
+				end
+			end
+		end
+		internal
+		event e : controller?positiony_bis
+		action do
+			received_controller_positiony = true
+			controller_position_y = e.y
+			if (received_controller_positionvar334x) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positiony = false
+					received_controller_positionvar334x = false
+				end
+			end
+		end
+		internal
+		event e : controller?positionvar334x_bis
+		action do
+			received_controller_positionvar334x = true
+			controller_position_var334 = e.var334
+			controller_position_x = e.x
+			if (received_controller_positiony) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positionvar334x = false
+					received_controller_positiony = false
+				end
+			end
+		end
+	}
+}
+configuration BreakoutBrowser {
+	instance game : BreakoutGameBrowserRND
+	instance disp : DisplayBrowserRND
+	instance sound : SoundControllerBrowserRND
+	instance ctrl : VelocityControllerRND
+	instance timer : TimerJSRND
+	connector game.clock => timer . timer
+	connector ctrl.clock => timer . timer
+	connector game.display => disp . display
+	connector game.sound => sound . sound
+	connector game.controller => ctrl . controls
+	connector ctrl.ctrl_in => disp . vctrl
+}
