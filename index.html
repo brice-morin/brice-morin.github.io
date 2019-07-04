@@ -45,18 +45,18 @@ Over the past 10 years and together with Franck Fleurey, I have been actively de
 {% for post in site.categories.paper %}
   {% if post.categories contains 'conference' %}
     {% assign conference=conference | plus:1 %}
-    {% assign totalpaper | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'workshop' %}
     {% assign workshop=workshop | plus:1 %}
-    {% assign totalpaper | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'journal' %}
     {% assign journal=journal | plus:1 %}
-    {% assign totalpaper | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'invited talk' %}
     {% assign invitedTalk=invitedTalk | plus:1 %}
   {% elsif post.categories contains 'chapter' %}
     {% assign chapter=chapter | plus:1 %}
-    {% assign totalpaper | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% endif%}
 {% endfor %}
 

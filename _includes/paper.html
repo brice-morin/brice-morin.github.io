@@ -1,4 +1,5 @@
 {% assign workshop = "0" %}
+{% assign totalpaper = "0" %}
 {% assign conference = "0" %}
 {% assign journal = "0" %}
 {% assign invitedTalk = "0" %}
@@ -6,14 +7,18 @@
 {% for post in site.categories.paper %}
   {% if post.categories contains 'conference' %}
     {% assign conference=conference | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'workshop' %}
     {% assign workshop=workshop | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'journal' %}
     {% assign journal=journal | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% elsif post.categories contains 'invited talk' %}
     {% assign invitedTalk=invitedTalk | plus:1 %}
   {% elsif post.categories contains 'chapter' %}
     {% assign chapter=chapter | plus:1 %}
+    {% assign totalpaper=totalpaper | plus:1 %}
   {% endif%}
 {% endfor %}
 
@@ -21,7 +26,7 @@
   <div class="grid">
     <div class="unit whole center-on-mobiles">
 <p>
-This page presents the list of my publications:<b class="journal"> {{ journal }} journal papers</b>, <b class="chapter"> {{ chapter }} book chapters</b>, <b class="conference">{{ conference }} conference papers</b>, <b class="workshop">{{ workshop }} workshops</b> and <b class="invitedTalk">{{ invitedTalk }} talks</b> (not including presentation of papers at conferences or workshops), sorted by year. All the papers are in English and have been peer-reviewed. See also <a href="https://dblp.uni-trier.de/pers/hd/m/Morin:Brice.html" target="_blank">DBLP</a> and <a href="https://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ" target="_blank">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489" target="_blank">ACM Digital Library</a>, <a href="http://www.researchgate.net/profile/Brice_Morin/" target="_blank">Research Gate</a>, or <a href="https://sintef.academia.edu/BriceMorin" target="_blank">Academia</a>.
+This page presents the list of my {{ totalpaper }} publications:<b class="journal"> {{ journal }} journal papers</b>, <b class="chapter"> {{ chapter }} book chapters</b>, <b class="conference">{{ conference }} conference papers</b>, and <b class="workshop">{{ workshop }} workshops</b>, sorted by year. All the papers are in English and have been peer-reviewed. See also <a href="https://dblp.uni-trier.de/pers/hd/m/Morin:Brice.html" target="_blank">DBLP</a> and <a href="https://scholar.google.fr/citations?hl=en&user=Xtmh924AAAAJ" target="_blank">Google Scholar</a>, <a href="http://dl.acm.org/author_page.cfm?id=81384605489" target="_blank">ACM Digital Library</a>, <a href="http://www.researchgate.net/profile/Brice_Morin/" target="_blank">Research Gate</a>, or <a href="https://sintef.academia.edu/BriceMorin" target="_blank">Academia</a>.
 </p>
 <br/>
 </div>
