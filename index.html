@@ -15,13 +15,29 @@ overview: true
   <div class="grid">
     <div class="unit whole center-on-mobiles">
       <p>
-I am a Senior Research Scientist at SINTEF Digital, Oslo, Norway. My research focuses on investigating sound and practical modeling foundations for software systems. I apply my research to diverse software systems ranging from resource-constrained devices within the Internet-of-Things, up to large scale cloud-based systems.
+I am a Senior Research Scientist at SINTEF Digital, Oslo, Norway.
+
+My mission is to provide automated software engineering tools for exploiting and amplifying the diversity available at all levels in modern software stacks.
+
+Through automated diversity, my goal is to make complex software-intensive systems more resilient, and ideally immune, to known and unknown factors such as failures or attacks.
+
+This journey started back in 2007 during my PhD, when I explored how models@runtime could be used to specify, monitor and control the runtime diversity in dynamically adaptive systems, allowing the system to adapt to varying conditions in its execution environment.
+
+Later, before Docker and microservices, I contributed to CloudML together with Nicolas Ferry and Franck Chauvel, a models@runtime approach for Cloud apps. CloudML helped developers deploy their apps on top of multiple cloud providers, increasing availability and preventing vendor lock-in.
+
+These days, I'm using Docker as a key instrument supporting my research, helping me to experiment with diverse versions of the same systems.
+
+Over the past 10 years and together with Franck Fleurey, I have been actively developing and using ThingML, a modeling language and family of compilers for asynchronous, distributed systems. From an abstract ThingML specifications, it is possible to generate fully operational code for C, Go, Java and JavaScript communicating over different protocols (MQTT, Serial, Websocket and so on). I am using ThingML as a tool to amplify diversity.
+
+
+
       </p>
     </div>
   </div>
 </section>
 
 {% assign workshop = "0" %}
+{% assign totalpaper = "0" %}
 {% assign conference = "0" %}
 {% assign journal = "0" %}
 {% assign invitedTalk = "0" %}
@@ -29,14 +45,18 @@ I am a Senior Research Scientist at SINTEF Digital, Oslo, Norway. My research fo
 {% for post in site.categories.paper %}
   {% if post.categories contains 'conference' %}
     {% assign conference=conference | plus:1 %}
+    {% assign totalpaper | plus:1 %}
   {% elsif post.categories contains 'workshop' %}
     {% assign workshop=workshop | plus:1 %}
+    {% assign totalpaper | plus:1 %}
   {% elsif post.categories contains 'journal' %}
     {% assign journal=journal | plus:1 %}
+    {% assign totalpaper | plus:1 %}
   {% elsif post.categories contains 'invited talk' %}
     {% assign invitedTalk=invitedTalk | plus:1 %}
   {% elsif post.categories contains 'chapter' %}
     {% assign chapter=chapter | plus:1 %}
+    {% assign totalpaper | plus:1 %}
   {% endif%}
 {% endfor %}
 
@@ -45,7 +65,7 @@ I am a Senior Research Scientist at SINTEF Digital, Oslo, Norway. My research fo
     <div class="unit one-third">
       <p><h3><a href="{{ site.url }}/papers" class=""><i class="icon-file-alt"></i> Papers</a></h3></p>
       <p>
-        List of my peer-reviewed publications since 2007, including {{ journal }} journal papers, {{ chapter }} book chapters, {{ conference }} conference papers and {{ workshop }} workshops.
+        I am the (co-)author of {{ totalpaper }} peer-reviewed papers published in international venues, including {{ journal }} journal papers, {{ chapter }} book chapters, {{ conference }} conference papers and {{ workshop }} workshops.
       </p>
     </div>
     <div class="unit one-third hide-on-mobiles">
@@ -54,7 +74,7 @@ I am a Senior Research Scientist at SINTEF Digital, Oslo, Norway. My research fo
     <div class="unit one-third">
       <p><h3><a href="{{ site.url }}/prototypes" class=""><i class="icon-save"></i> Proto<span class="hide-on-mobiles">types</span></a></h3></p>
       <p>
-        Because research in Software Engineering without coding is a fraud, my prototypes are hosted on <a href="https://github.com/brice-morin">Github</a>. Most code is available under a flexible Apache 2.0 License.
+        In an Open approach to Science, my prototypes are hosted on <a href="https://github.com/brice-morin">Github</a>. Most code is available under a flexible Apache 2.0 License.
       </p>
     </div>
   </div>
