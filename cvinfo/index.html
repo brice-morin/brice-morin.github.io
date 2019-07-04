@@ -22,7 +22,8 @@ title: Brice Morin's Positions and Education (CV)
       <h3 class="diploma"> {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
 
       {% elsif post.categories contains 'work' %}
-        {% if forloop.index == lastDate %}<h3 class="work"> Current: </h3>
+        {% if forloop.index == lastDate %}
+        <h3 class="work"> Current: </h3>
         {% else %}
         <h3 class="work"> {{post.date | date: "%B %Y"}}: {{ post.title }} </h3>
         {% endif %}
